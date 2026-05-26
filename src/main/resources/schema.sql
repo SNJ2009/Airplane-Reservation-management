@@ -31,7 +31,7 @@ CREATE TABLE schedule_seat ( -- 남은 좌석 위치
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
     seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
-    is_null BOOLEAN DEFAULT NULL, -- 좌석 예약 여부
+    is_take BOOLEAN DEFAULT NULL, -- 좌석 예약 여부
 
     FOREIGN KEY (schedule_id) REFERENCES schedule(id)
     UNIQUE(schedule_id, seat) -- Composite Unique
@@ -54,3 +54,8 @@ CREATE TABLE reservation (
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
     FOREIGN KEY (selected_seat) REFERENCES schedule_seat(id)
 );
+
+CREATE TABLE salt {
+    id INT PRIMARY KEY AUTO_INCREMENT,
+
+}

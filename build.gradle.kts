@@ -14,6 +14,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("com.mysql:mysql-connector-j:9.5.0") //
+    implementation("org.mindrot:jbcrypt:0.4")
 }
 
 tasks.test {
