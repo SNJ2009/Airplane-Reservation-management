@@ -41,7 +41,8 @@ CREATE TABLE user (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     password VARCHAR(64) NOT NULL, -- SHA-256 기준 64글자
-    phone VARCHAR(20) NOT NULL
+    phone VARCHAR(20) NOT NULL,
+    salt VARCHAR(5)
 );
 
 CREATE TABLE reservation (
@@ -54,8 +55,3 @@ CREATE TABLE reservation (
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
     FOREIGN KEY (selected_seat) REFERENCES schedule_seat(id)
 );
-
-CREATE TABLE salt {
-    id INT PRIMARY KEY AUTO_INCREMENT,
-
-}
