@@ -8,6 +8,7 @@ public class Logger {
         System.out.println("[SignUp]        user signup [id] [password]");
         System.out.println("[Login]         user login [id] [password]");
         System.out.println("MANAGEMENT -------------------------------------");
+        System.out.println("[Schedule Add]  manage schedule add [plane_id] [] [] [] []");
         System.out.println("FLIGHTS ----------------------------------------");
         System.out.println("[Search Flights]        show schedules");
         System.out.println("[Booked Flights]        show booked");
@@ -22,5 +23,22 @@ public class Logger {
 
     public static void error(String message){
         System.out.println(Color.RED+ "[ERROR] : " +message+ Color.RESET);
+    }
+
+    public static void asciArt(){
+        System.out.println(Color.CYAN);
+        System.out.println("     ___   _   ____   ____   _        ___   _   _   _____");
+        System.out.println("    / _ \\ | | |  _ \\ |  _ \\ | |      / _ \\ | \\ | | | ____|");
+        System.out.println("   / /_\\ \\| | | |_) || |_) || |     / /_\\ \\|  \\| | |  _|  ");
+        System.out.println("  / ____ \\| | |  _ < |  __/ | |___ / ____ \\| |\\  | | |___ ");
+        System.out.println(" /_/    \\_\\_|_|_| \\_\\|_|    |_____/_/    \\_\\_| \\_| |_____|");
+        System.out.println(Color.RESET);
+    }
+
+
+    public static void line(int level){
+        for(int i = 0; i < level; i++){
+            System.out.println();
+        }
     }
 }

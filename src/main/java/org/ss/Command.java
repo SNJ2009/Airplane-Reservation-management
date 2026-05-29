@@ -11,7 +11,7 @@ public class Command {
 //        System.out.println(commands[0]);
 
         if (commands[0].equals("help")) { // 명령어
-            System.out.println("help");
+//            System.out.println("help");
             Logger.commands();
         } else if (commands[0].equals("user")) { // 회원정보
             if(commands[1].equals("login")) {
@@ -25,4 +25,8 @@ public class Command {
             Logger.error("Invalid command");
         }
     }
+
+//    public boolean isCommand(String[] command, int length){
+//        return command.length == length;
+//    }
 }

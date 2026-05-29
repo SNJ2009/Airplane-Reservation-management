@@ -10,7 +10,7 @@ public class DBConnecter {
         try {
             // db.properties 에 있는 url, user, pwd 가져와서 해주고
             // Connection 에따 저거 넣어주고
-        } catch () {
+        } catch (Exception e) {
 
         }
     }
