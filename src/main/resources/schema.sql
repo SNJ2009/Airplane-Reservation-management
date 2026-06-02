@@ -33,7 +33,7 @@ CREATE TABLE schedule_seat ( -- 남은 좌석 위치
     seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
     is_take BOOLEAN DEFAULT NULL, -- 좌석 예약 여부
 
-    FOREIGN KEY (schedule_id) REFERENCES schedule(id)
+    FOREIGN KEY (schedule_id) REFERENCES schedule(id),
     UNIQUE(schedule_id, seat) -- Composite Unique
 );
 
@@ -42,6 +42,7 @@ CREATE TABLE user (
     name VARCHAR(50) NOT NULL,
     password VARCHAR(64) NOT NULL, -- SHA-256 기준 64글자
     phone VARCHAR(20) NOT NULL,
+    isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지
     salt VARCHAR(5)
 );
 
