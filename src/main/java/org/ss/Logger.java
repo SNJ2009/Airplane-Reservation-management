@@ -22,7 +22,7 @@ public class Logger {
     }
 
     public static void error(String message){
-        System.out.println(Color.RED+ "[ERROR] : " +message+ Color.RESET);
+        System.err.println("[ERROR] : " +message);
     }
 
     public static void asciArt(){

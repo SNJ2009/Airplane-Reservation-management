@@ -1,33 +1,33 @@
 package org.ss.services;
 
 import org.ss.Logger;
+import org.ss.entity.Member;
 
 public class MemberService {
-    private String username;
-    private String hashedPassword;
+    private final Member member = Member.getInstance();
+    private final String pepper = "I am a Pepper";
 
+    public void user(String action, String id, String password){
+        boolean idIsEmpty = id.isEmpty();
+        boolean pIsEmpty = password.isEmpty();
 
-    public void user(String action, String username, String password){
-        if(username.isEmpty() && password.isEmpty()){
+        if(idIsEmpty || pIsEmpty){
             return;
-        } else {
-            this.username = username;
-            this.hashedPassword = hash(password);
         }
 
         if(action.equals("login")){
-            login();
+            login(id, password);
         } else if(action.equals("signup")){
-            signUp();
-        } else Logger.error(username + " is not a valid action"); // 잘못된 명령어
+            signUp(id, password);
+        } else Logger.error(action + " is not a valid action"); // 잘못된 명령어
     }
 
 
-    public void login() {
-
+    public void login(String id, String password) {
+        password = hash(password);
     }
-    public void signUp(){
-
+    public void signUp(String id, String password){
+        password = hash(password);
     }
 
     private String hash(String password) {

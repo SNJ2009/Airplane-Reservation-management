@@ -1,14 +1,12 @@
 package org.ss.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Member {
     private String id;
     private String name;
@@ -17,16 +15,9 @@ public class Member {
     private boolean isManager;
     private String salt;
 
-    private static Member member = null;
-    public static Member getInstance() { return member; }
+    private static Member member = new Member();
 
-    public void toEntity(String id, String password) {
-        generateMember();
-        this.id = id;
-        this.password = password;
-    }
-
-    public void generateMember(){
-        member = new Member();
+    public static Member getInstance() { // Member 클래스만 Singleton
+        return member;
     }
 }
