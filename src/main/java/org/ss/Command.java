@@ -32,10 +32,10 @@ public class Command {
         MemberService memberService = new MemberService();
 
         commandMap.put("help", Logger::commands);
-        commandMap.put("user", () -> memberService.user(command[1], command[2], command[3])); // 문제 있는듯
+        commandMap.put("user", () -> memberService.user(command[2], command[3], command[4])); // 문제 있는듯
         commandMap.put("schedules", () -> {});
         commandMap.put("book", () -> {});
 
-        commandMap.get(command[0]).run();
+        commandMap.get(command[1]).run();
     }
 }
