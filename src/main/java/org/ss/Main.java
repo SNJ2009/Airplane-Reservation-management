@@ -2,6 +2,8 @@ package org.ss;
 
 import org.ss.common.Color;
 import org.ss.common.Scan;
+import org.ss.dao.MemberDAO;
+import org.ss.entity.Member;
 
 public class Main {
     public static void main(String[] args) {

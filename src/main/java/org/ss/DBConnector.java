@@ -20,9 +20,9 @@ public class DBConnector {
             }
 
             // url, user, pwd 가져오기
-            String url = props.getProperty("url");
-            String user = props.getProperty("user");
-            String pwd = props.getProperty("pwd");
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String pwd = props.getProperty("db.password");
 
             this.connection = DriverManager.getConnection(url, user, pwd);
 

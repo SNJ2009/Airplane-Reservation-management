@@ -23,7 +23,7 @@ public class MemberDAO {
             ps.setBoolean(5, member.isManager());
             ps.setString(6, member.getSalt());
 
-            ps.executeQuery();
+            ps.executeUpdate();
         }
 
         conn.close();

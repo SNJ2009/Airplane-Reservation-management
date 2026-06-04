@@ -2,7 +2,7 @@
 -- DB에 복붙
 
 CREATE DATABASE airplane;
-USE DATABASE airplane;
+USE airplane;
 
 CREATE TABLE model (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,7 +43,7 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL, -- SHA-256 기준 64글자
     phone VARCHAR(20) NOT NULL,
     isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지
-    salt VARCHAR(5) NOT NULL,
+    salt VARCHAR(5) NOT NULL
 );
 
 CREATE TABLE reservation (
