@@ -14,7 +14,9 @@ public class Main {
         while(true) {
             System.out.print(" > ");
             String command = Scan.line();
-            Command.parseCommand(command);
+
+            String[] parsedCommand = Command.parseCommand(command);
+            Command.executeCommand(parsedCommand);
         }
     }
 }

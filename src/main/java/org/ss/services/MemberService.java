@@ -8,10 +8,11 @@ public class MemberService {
     private final String pepper = "I am a Pepper";
 
     public void user(String action, String id, String password){
+        boolean acIsEmpty = action.isEmpty();
         boolean idIsEmpty = id.isEmpty();
         boolean pIsEmpty = password.isEmpty();
 
-        if(idIsEmpty || pIsEmpty){
+        if(acIsEmpty || idIsEmpty || pIsEmpty){
             return;
         }
 

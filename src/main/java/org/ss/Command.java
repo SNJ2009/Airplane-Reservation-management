@@ -1,23 +1,41 @@
 package org.ss;
 
+import org.ss.entity.Member;
 import org.ss.services.BookService;
+import org.ss.services.MemberService;
 import org.ss.services.ScheduleService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Command {
-    public static void parseCommand(String command){
-        if(command.isEmpty() || command.startsWith("air")){ // cmd에 아무것도 없음
-            return;
+    public static String[] parseCommand(String command){
+//        System.out.println("[Command] "+command);
+        if(command.isEmpty() || !command.startsWith("air")){ // cmd에 아무것도 없음
+            return null;
         }
 
-        command = command.toLowerCase().strip();
-        String[] commands = command.split(" ");
+        command = command.strip();
+        String[] commands = command.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 
+        for(int i = 0; i < commands.length; i++){
+            if(commands[i].startsWith("\"") && commands[i].endsWith("\"")){
+                commands[i] = commands[i].substring(1, commands[i].length() - 1);
+            }
+        }
+        return commands;
+//        System.out.println(Arrays.toString(commands));
+    }
+
+    public static void executeCommand(String[] command){
         HashMap<String, Runnable> commandMap = new HashMap<>();
+        MemberService memberService = new MemberService();
+
         commandMap.put("help", Logger::commands);
-        commandMap.put("user", () -> {});
+        commandMap.put("user", () -> memberService.user(command[1], command[2], command[3])); // 문제 있는듯
         commandMap.put("schedules", () -> {});
         commandMap.put("book", () -> {});
+
+        commandMap.get(command[0]).run();
     }
 }
