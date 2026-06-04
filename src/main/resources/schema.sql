@@ -23,11 +23,13 @@ CREATE TABLE schedule (
     plane_id INT,
     departure CHAR(3) NOT NULL, -- 출발지
     destination CHAR(3) NOT NULL, -- 도착지
+    runtime DATETIME NOT NULL, -- 출발시간
+    endtime DATETIME NOT NULL, -- 도착시간
 
     FOREIGN KEY (plane_id) REFERENCES plane(id)
 );
 
-CREATE TABLE schedule_seat ( -- 남은 좌석 위치
+CREATE TABLE schedule_seat ( -- 좌석 번호랄까? 비행기 좌석 구조랄까? ( 이거 없으면 유저가 예약 취소 했을 떄 좌석까지 같이 사라짐 )
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
     seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
@@ -43,14 +45,14 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL, -- SHA-256 기준 64글자
     phone VARCHAR(20) NOT NULL,
     isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지
-    salt VARCHAR(5) NOT NULL
+    salt VARCHAR(16) NOT NULL -- 레인보우 테이블 어택 무력화용 salt ( 사용자마다 솔트 다르게 들어가서 같은 비번이라도 해시값 다름 = 공격 지연 )
 );
 
-CREATE TABLE reservation (
+CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id VARCHAR(50),
-    schedule_id INT,
-    selected_seat INT,
+    user_id VARCHAR(50), -- 예약한 유저
+    schedule_id INT, -- 어떤 항공편 좌석인지 ( 항공편 id )
+    selected_seat INT, -- 좌석번호 FK (좌석 번호 id)(A1, A2 , , , )
 
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),

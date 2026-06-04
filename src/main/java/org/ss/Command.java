@@ -27,7 +27,7 @@ public class Command {
 //        System.out.println(Arrays.toString(commands));
     }
 
-    public static void executeCommand(String[] command){
+    public static void executeCommand(String[] command){ // 여기 수정해야 함
         HashMap<String, Runnable> commandMap = new HashMap<>();
         MemberService memberService = new MemberService();
 

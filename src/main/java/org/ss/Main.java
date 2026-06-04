@@ -18,7 +18,7 @@ public class Main {
             String command = Scan.line();
 
             String[] parsedCommand = Command.parseCommand(command);
-            Command.executeCommand(parsedCommand);
+            if(parsedCommand != null) Command.executeCommand(parsedCommand);
         }
     }
 }
