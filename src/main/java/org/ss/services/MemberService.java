@@ -93,6 +93,14 @@ public class MemberService {
         return Base64.getEncoder().encodeToString(saltBytes);
     }
 
+    /**
+     * id와 비밀번호가 null이 아닌지 검사 <br>
+     * null이라면 "id or password is empty" 출력
+     *
+     * @param id 입력받은 아이디
+     * @param pwd 입력받은 비밀번호
+     * @return 이이디 또는 비밀번호 둥 중 하나라도 {@code null}이라면 {@code true} 반환
+     */
     public boolean checkIdPwdEmpty(String id, String pwd){
         if(id.isEmpty() || pwd.isEmpty()){
             Logger.error("id or password is empty");
