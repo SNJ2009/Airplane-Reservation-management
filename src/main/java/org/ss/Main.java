@@ -10,7 +10,7 @@ public class Main {
         Logger.line(200);
         Logger.asciArt();
         System.out.println("=============================================================");
-        System.out.println("COMMAND HERE");
+        System.out.println("COMMAND HERE (show commands : air help)");
         System.out.println("=============================================================");
 
         while(true) {

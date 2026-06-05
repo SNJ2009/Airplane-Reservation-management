@@ -17,7 +17,7 @@ public class MemberDAO {
 
         try(PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setString(1, member.getId());
-            ps.setString(2, member.getName());
+            ps.setString(2, member.getName()); // 아직 NOT NULL 인 것 들 다 입력한게 아니라 여기서 에러뜸
             ps.setString(3, member.getPassword());
             ps.setString(4, member.getPhone());
             ps.setBoolean(5, member.isManager());
@@ -38,19 +38,22 @@ public class MemberDAO {
             ps.setString(1, id);
 
             try (ResultSet rs = ps.executeQuery()){
-                Member member = Member.getInstance();
+                if(rs.next()) {
+                    Member member = Member.getInstance();
 
-                member.setId(rs.getString("id"));
-                member.setName(rs.getString("name"));
-                member.setPassword(rs.getString("password"));
-                member.setPhone(rs.getString("phone"));
-                member.setManager(rs.getBoolean("isManager"));
-                member.setSalt(rs.getString("salt"));
+                    member.setId(rs.getString("id"));
+                    member.setName(rs.getString("name"));
+                    member.setPassword(rs.getString("password"));
+                    member.setPhone(rs.getString("phone"));
+                    member.setManager(rs.getBoolean("isManager"));
+                    member.setSalt(rs.getString("salt"));
 
-                conn.close();
-                return member;
+                    conn.close();
+                    return member;
+                }
             }
         }
+        return null;
     }
 
     // CRUD : Completed(CR) NOT YET (UD)
