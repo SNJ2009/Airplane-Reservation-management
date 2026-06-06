@@ -43,7 +43,7 @@ public class DBUtil {
 
     @SneakyThrows
     public static <T> List<T> executeQueryForList(String sql, RowMapper<T> rm, Object... params) { // 여러 개 조회
-        List<T> list = new ArrayList<>(); // 결과를 담을 빈 바구니 생성
+        List<T> list = new ArrayList<>(); // 결과 담아둘 리스트 생성
 
         try (Connection conn = DBConnector.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class DBUtil {
                 }
             }
         }
-        return list; // 데이터가 하나도 없으면 빈 리스트(size=0)
+        return list; // 데이터가 하나도 없으면 빈 리스트(.size() = 0)
     }
 
     // 데이터 조립용
