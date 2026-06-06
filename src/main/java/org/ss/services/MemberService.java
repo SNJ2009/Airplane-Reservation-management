@@ -1,5 +1,6 @@
 package org.ss.services;
 
+import org.ss.Command;
 import org.ss.Logger;
 import org.ss.dao.MemberDAO;
 import org.ss.entity.Member;
@@ -14,19 +15,30 @@ public class MemberService {
     private final MemberDAO memberDAO = new MemberDAO();
     private final String pepper = "I am a Pepper";
 
-    public void user(String action, String id, String password){
-        boolean acIsEmpty = action.isEmpty();
-        boolean idIsEmpty = id.isEmpty();
-        boolean pIsEmpty = password.isEmpty();
+    public void user(String[] cmd){
+        if(Command.isInvalidLength(cmd, 3, 7)) return;
+        String action = cmd[2];
 
-        if(acIsEmpty || idIsEmpty || pIsEmpty){
-            return;
-        }
+        if(action.isEmpty()) return;
 
         if(action.equals("login")){
+            if(Command.isInvalidLength(cmd, 5)) return;
+
+            String id = cmd[3];
+            String password = cmd[4];
+
             login(id, password);
+
         } else if(action.equals("signup")){
-            signUp(id, password);
+            if(Command.isInvalidLength(cmd, 7)) return;
+
+            String id = cmd[3];
+            String name = cmd[4];
+            String password = cmd[5];
+            String phone = cmd[6];
+
+            signUp(id, name, password, phone);
+
         } else Logger.error(action + " is not a valid action"); // 잘못된 명령어
     }
 
@@ -43,6 +55,7 @@ public class MemberService {
         String password = memberDAOById.getPassword();
         userInputPassword = hash(userInputPassword);
 
+        // WHERE id = '' AND password = ''
         if(password.equals(userInputPassword)){
             Logger.info("Login Successful");
         } else {
@@ -50,7 +63,7 @@ public class MemberService {
         }
     }
 
-    public void signUp(String id, String password) {
+    public void signUp(String id, String name, String password, String phone) {
         if(checkIdPwdEmpty(id, password)) return;
 
         Member memberDAOById = memberDAO.findById(id);
@@ -58,13 +71,16 @@ public class MemberService {
             Logger.error("SignUp Failed : Already Exists");
             return;
         }
-        member.setId(id);
-
-        String newSalt = generateSalt();
-        member.setSalt(newSalt);
 
         String hashedPassword = hash(password);
+        String newSalt = generateSalt();
+
+        member.setId(id);
+        member.setName(name);
         member.setPassword(hashedPassword);
+        member.setPhone(phone);
+        member.setManager(false);
+        member.setSalt(newSalt);
 
         // DB 저장
         memberDAO.save(member);

@@ -19,8 +19,7 @@ public class Command {
     static {
         commandMap.put("help", command -> Logger.commands());
         commandMap.put("user", command -> {
-            if(isInvalidLength(command, 5)) return;
-            memberService.user(command[2], command[3], command[4]);
+            memberService.user(command);
         });
         commandMap.put("schedules", command -> {
             if(isInvalidLength(command, 2)) return;
@@ -73,7 +72,20 @@ public class Command {
      * @return 요구하는 배열의 길이를 만족하지 못하면 {@code true}, 그 외 {@code false}
      */
     public static boolean isInvalidLength(String[] command, int requiredLength){
-        if(command.length < requiredLength || command.length > requiredLength){
+        return isInvalidLength(command, requiredLength, requiredLength);
+    }
+
+    /**
+     * 명령어 배열의 길이가 요구하는 배열의 길이를 만족하는지 검사 <br>
+     * 기준에 만족하지 않으면 "Invalid command length" 출력
+     *
+     * @param command 입력받은 명령어 배열
+     * @param minLength 입력받은 배열의 최소 길이
+     * @param maxLength 입력받은 배열의 최대 길이
+     * @return 요구하는 배열의 길이를 만족하지 못하면 {@code true}, 그 외 {@code false}
+     */
+    public static boolean isInvalidLength(String[] command, int minLength, int maxLength){
+        if(command.length > maxLength && command.length < minLength){
             Logger.error("Invalid command length");
             return true;
         }

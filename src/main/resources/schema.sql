@@ -4,18 +4,11 @@
 CREATE DATABASE airplane;
 USE airplane;
 
-CREATE TABLE model (
+CREATE TABLE plane ( -- 항공사 항공기 별 최대 좌석 수
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50)
-);
-
-CREATE TABLE plane (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    airline VARCHAR(20) NOT NULL,
-    model_id INT, -- 기종명
+    airline VARCHAR(20) NOT NULL, -- 항공사 (같은 기종이어도 항공사마다 최대 좌석 수 다름)
+    model VARCHAR(50), NOT NULL-- B747, A380 등
     max_seat INT NOT NULL, -- 최대 좌석 수
-
-    FOREIGN KEY (model_id) REFERENCES model(id)
 );
 
 CREATE TABLE schedule (
@@ -23,8 +16,8 @@ CREATE TABLE schedule (
     plane_id INT,
     departure CHAR(3) NOT NULL, -- 출발지
     destination CHAR(3) NOT NULL, -- 도착지
-    runtime DATETIME NOT NULL, -- 출발시간
-    endtime DATETIME NOT NULL, -- 도착시간
+    run_time DATETIME NOT NULL, -- 출발시간
+    flight_time INT NOT NULL, -- 소요시간/분
 
     FOREIGN KEY (plane_id) REFERENCES plane(id)
 );
@@ -33,7 +26,7 @@ CREATE TABLE schedule_seat ( -- 좌석 번호랄까? 비행기 좌석 구조랄�
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
     seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
-    is_take BOOLEAN DEFAULT NULL, -- 좌석 예약 여부
+    is_take BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
 
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
     UNIQUE(schedule_id, seat) -- Composite Unique
@@ -42,9 +35,9 @@ CREATE TABLE schedule_seat ( -- 좌석 번호랄까? 비행기 좌석 구조랄�
 CREATE TABLE user (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    password VARCHAR(64) NOT NULL, -- SHA-256 기준 64글자
+    password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지
+    isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지 (프로그램에서 직접 주는거 X, 회원가입 후 DB 직접 수정해서 true로 바꿔줘야 함)
     salt VARCHAR(16) NOT NULL -- 레인보우 테이블 어택 무력화용 salt ( 사용자마다 솔트 다르게 들어가서 같은 비번이라도 해시값 다름 = 공격 지연 )
 );
 
