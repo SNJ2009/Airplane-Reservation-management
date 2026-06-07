@@ -1,7 +1,7 @@
 package org.ss.services;
 
-import org.ss.Command;
-import org.ss.Logger;
+import org.ss.controller.Command;
+import org.ss.common.ConsoleView;
 import org.ss.dao.MemberDAO;
 import org.ss.entity.Member;
 
@@ -39,7 +39,7 @@ public class MemberService {
 
             signUp(id, name, password, phone);
 
-        } else Logger.error(action + " is not a valid action"); // 잘못된 명령어
+        } else ConsoleView.error(action + " is not a valid action"); // 잘못된 명령어
     }
 
 
@@ -48,7 +48,7 @@ public class MemberService {
 
         Member memberDAOById = memberDAO.findById(id);
         if(memberDAOById == null){ // db에 있는 id인지 (없으면 return)
-            Logger.error("Login Failed : User not found");
+            ConsoleView.error("Login Failed : User not found");
             return;
         }
 
@@ -56,9 +56,9 @@ public class MemberService {
         userInputPassword = hash(userInputPassword);
 
         if(password.equals(userInputPassword)){
-            Logger.info("Login Successful");
+            ConsoleView.info("Login Successful");
         } else {
-            Logger.error("Login Failed");
+            ConsoleView.error("Login Failed");
         }
     }
 
@@ -67,7 +67,7 @@ public class MemberService {
 
         Member memberDAOById = memberDAO.findById(id);
         if(memberDAOById != null){ // db에 있는 id인지 (있으면 return)
-            Logger.error("SignUp Failed : Already Exists");
+            ConsoleView.error("SignUp Failed : Already Exists");
             return;
         }
 
@@ -83,7 +83,7 @@ public class MemberService {
 
         // DB 저장
         memberDAO.save(member);
-        Logger.info("SignUp Successful! Welcome, " + id);
+        ConsoleView.info("SignUp Successful! Welcome, " + id);
     }
 
     private String hash(String password) {
@@ -97,7 +97,7 @@ public class MemberService {
 
             return password;
         } catch (NoSuchAlgorithmException e){
-            Logger.error("Failed to hash password");
+            ConsoleView.error("Failed to hash password");
         } return null;
     }
 
@@ -118,7 +118,7 @@ public class MemberService {
      */
     public boolean checkIdPwdEmpty(String id, String pwd){
         if(id.isEmpty() || pwd.isEmpty()){
-            Logger.error("id or password is empty");
+            ConsoleView.error("id or password is empty");
             return true;
         }
         return false;

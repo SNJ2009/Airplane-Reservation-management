@@ -1,11 +1,10 @@
-package org.ss;
+package org.ss.controller;
 
-import org.ss.entity.Member;
+import org.ss.common.ConsoleView;
 import org.ss.services.BookService;
 import org.ss.services.MemberService;
 import org.ss.services.ScheduleService;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -17,7 +16,7 @@ public class Command {
     private static final HashMap<String, Consumer<String[]>> commandMap = new HashMap<>();
 
     static {
-        commandMap.put("help", command -> Logger.commands());
+        commandMap.put("help", command -> ConsoleView.commands());
         commandMap.put("user", command -> {
             memberService.user(command);
         });
@@ -52,15 +51,16 @@ public class Command {
     // 명령어 실행부분
     public static void executeCommand(String[] command){
         if(command == null) {
-            Logger.error("Command is null");
+            ConsoleView.error("Command is null");
             return;
         } else if (command.length < 2) {
-            Logger.error("Invalid command");
+            ConsoleView.error("Invalid command");
+            return;
         }
 
         Consumer<String[]> action = commandMap.get(command[1]);
         if(action != null) action.accept(command); // 실행
-        else Logger.error("Unknown command");
+        else ConsoleView.error("Unknown command");
     }
 
     /**
@@ -85,8 +85,8 @@ public class Command {
      * @return 요구하는 배열의 길이를 만족하지 못하면 {@code true}, 그 외 {@code false}
      */
     public static boolean isInvalidLength(String[] command, int minLength, int maxLength){
-        if(command.length > maxLength && command.length < minLength){
-            Logger.error("Invalid command length");
+        if(command.length > maxLength || command.length < minLength){
+            ConsoleView.error("Invalid command length");
             return true;
         }
         return false;

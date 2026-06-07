@@ -2,7 +2,7 @@ package org.ss.dao;
 
 
 import lombok.*;
-import org.ss.common.DBUtil;
+import org.ss.db.DBUtil;
 import org.ss.entity.Member;
 
 public class MemberDAO {

@@ -1,14 +1,13 @@
 package org.ss;
 
-import org.ss.common.Color;
+import org.ss.common.ConsoleView;
 import org.ss.common.Scan;
-import org.ss.dao.MemberDAO;
-import org.ss.entity.Member;
+import org.ss.controller.Command;
 
 public class Main {
     public static void main(String[] args) {
-        Logger.line(200);
-        Logger.asciArt();
+        ConsoleView.line(200);
+        ConsoleView.asciArt();
         System.out.println("=============================================================");
         System.out.println("COMMAND HERE (show commands : air help)");
         System.out.println("=============================================================");

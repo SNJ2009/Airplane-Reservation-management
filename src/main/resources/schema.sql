@@ -22,7 +22,7 @@ CREATE TABLE schedule (
     FOREIGN KEY (plane_id) REFERENCES plane(id)
 );
 
-CREATE TABLE schedule_seat ( -- 좌석 번호랄까? 비행기 좌석 구조랄까? ( 이거 없으면 유저가 예약 취소 했을 떄 좌석까지 같이 사라짐 )
+CREATE TABLE flight_occupancies ( -- 좌석 상태
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
     seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
@@ -38,7 +38,7 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지 (프로그램에서 직접 주는거 X, 회원가입 후 DB 직접 수정해서 true로 바꿔줘야 함)
-    salt VARCHAR(16) NOT NULL -- 레인보우 테이블 어택 무력화용 salt ( 사용자마다 솔트 다르게 들어가서 같은 비번이라도 해시값 다름 = 공격 지연 )
+    salt VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지

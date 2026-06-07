@@ -1,4 +1,6 @@
-package org.ss;
+package org.ss.db;
+
+import org.ss.common.ConsoleView;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -27,7 +29,7 @@ public class DBConnector {
             this.connection = DriverManager.getConnection(url, user, pwd);
 
         } catch (Exception e) {
-            Logger.error("DB Connection Fail : " + e);
+            ConsoleView.error("DB Connection Fail : " + e);
         }
     }
 
@@ -39,7 +41,7 @@ public class DBConnector {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            Logger.error("JDBC Driver Not Found [Please Restart]");
+            ConsoleView.error("JDBC Driver Not Found [Please Restart]");
         }
     }
 

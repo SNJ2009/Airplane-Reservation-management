@@ -1,8 +1,6 @@
-package org.ss;
+package org.ss.common;
 
-import org.ss.common.Color;
-
-public class Logger {
+public class ConsoleView {
     public static void commands(){ // HELP 명령 입력 시
         System.out.println("USER ===========================================");
         System.out.println("[SignUp]        user signup \"id\" \"password\"");
@@ -20,6 +18,7 @@ public class Logger {
     public static void info(String message){
         System.out.println("[INFO] : " +message);
     }
+    public static void message(String message){ System.out.println(message); }
 
     public static void error(String message){
         System.err.println("[ERROR] : " +message);

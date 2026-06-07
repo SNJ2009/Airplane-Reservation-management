@@ -1,7 +1,6 @@
-package org.ss.common;
+package org.ss.db;
 
 import lombok.SneakyThrows;
-import org.ss.DBConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
