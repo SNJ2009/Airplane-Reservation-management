@@ -55,7 +55,6 @@ public class MemberService {
         String password = memberDAOById.getPassword();
         userInputPassword = hash(userInputPassword);
 
-        // WHERE id = '' AND password = ''
         if(password.equals(userInputPassword)){
             Logger.info("Login Successful");
         } else {
