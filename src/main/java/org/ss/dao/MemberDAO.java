@@ -38,6 +38,4 @@ public class MemberDAO {
             return member;
         }, id);
     }
-
-    // CRUD : Completed(CR) NOT YET (UD)
 }
