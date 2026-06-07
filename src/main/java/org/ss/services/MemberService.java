@@ -51,14 +51,23 @@ public class MemberService {
             ConsoleView.error("Login Failed : User not found");
             return;
         }
+        this.member.setSalt(memberDAOById.getSalt());
 
         String password = memberDAOById.getPassword();
         userInputPassword = hash(userInputPassword);
 
         if(password.equals(userInputPassword)){
             ConsoleView.info("Login Successful");
+
+            this.member.setId(memberDAOById.getId());
+            this.member.setName(memberDAOById.getName());
+            this.member.setPassword(memberDAOById.getPassword());
+            this.member.setPhone(memberDAOById.getPhone());
+            this.member.setManager(memberDAOById.isManager());
         } else {
             ConsoleView.error("Login Failed");
+
+            this.member.setSalt(null);
         }
     }
 
@@ -71,15 +80,16 @@ public class MemberService {
             return;
         }
 
-        String hashedPassword = hash(password);
         String newSalt = generateSalt();
+        member.setSalt(newSalt);
+
+        String hashedPassword = hash(password);
 
         member.setId(id);
         member.setName(name);
         member.setPassword(hashedPassword);
         member.setPhone(phone);
         member.setManager(false);
-        member.setSalt(newSalt);
 
         // DB 저장
         memberDAO.save(member);

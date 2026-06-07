@@ -18,9 +18,10 @@ public class Command {
     static {
         commandMap.put("help", command -> ConsoleView.commands());
         commandMap.put("user", command -> {
+//            System.out.println(command.length);
             memberService.user(command);
         });
-        commandMap.put("schedules", command -> {
+        commandMap.put("schedule", command -> {
             scheduleService.schedule(command);
         });
         commandMap.put("book", command -> {

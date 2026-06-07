@@ -38,7 +38,7 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     isManager BOOLEAN DEFAULT FALSE NOT NULL, -- 항공편 관리 가능한 사람인지 (프로그램에서 직접 주는거 X, 회원가입 후 DB 직접 수정해서 true로 바꿔줘야 함)
-    salt VARCHAR(16) NOT NULL
+    salt VARCHAR(24) NOT NULL
 );
 
 CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지

@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBUtil {
+    private static final Connection conn = DBConnector.getInstance().getConnection();
+
     @SneakyThrows
     public static void executeUpdate(String sql, Object...params){
-        try (Connection conn = DBConnector.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (int i = 0; i < params.length; i++) {
                 ps.setObject(i + 1, params[i]);
@@ -24,8 +25,7 @@ public class DBUtil {
 
     @SneakyThrows
     public static <T> T executeQueryForObject(String sql, RowMapper<T> rm, Object... params) { // 하나만 조회
-        try (Connection conn = DBConnector.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (int i = 0; i < params.length; i++) {
                 ps.setObject(i + 1, params[i]);
@@ -44,8 +44,7 @@ public class DBUtil {
     public static <T> List<T> executeQueryForList(String sql, RowMapper<T> rm, Object... params) { // 여러 개 조회
         List<T> list = new ArrayList<>(); // 결과 담아둘 리스트 생성
 
-        try (Connection conn = DBConnector.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (int i = 0; i < params.length; i++) {
                 ps.setObject(i + 1, params[i]);

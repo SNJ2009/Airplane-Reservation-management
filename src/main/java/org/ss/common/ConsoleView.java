@@ -4,7 +4,7 @@ public class ConsoleView {
     public static void commands(){ // HELP 명령 입력 시
         System.out.println("USER ===========================================");
         System.out.println("[SignUp]        user signup \"id\" \"password\"");
-        System.out.println("[Login]         user login \"id\" \"password\"");
+        System.out.println("[Login]         user login \"id\" \"name\" \"password\" \"phone\"");
         System.out.println("MANAGEMENT -------------------------------------");
         System.out.println("[Schedule Add]  manage schedule add [plane_id] [] [] [] []");
         System.out.println("FLIGHTS ----------------------------------------");
