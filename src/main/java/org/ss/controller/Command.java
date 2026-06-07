@@ -21,13 +21,10 @@ public class Command {
             memberService.user(command);
         });
         commandMap.put("schedules", command -> {
-            if(isInvalidLength(command, 2)) return;
-            scheduleService.schedule(command); // 임시
-
+            scheduleService.schedule(command);
         });
         commandMap.put("book", command -> {
-            if(isInvalidLength(command, 2)) return;
-            bookService.book(command); // 임시
+            bookService.book(command);
         });
     }
     public static String[] parseCommand(String command){

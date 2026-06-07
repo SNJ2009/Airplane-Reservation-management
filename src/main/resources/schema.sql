@@ -7,8 +7,8 @@ USE airplane;
 CREATE TABLE plane ( -- 항공사 항공기 별 최대 좌석 수
     id INT PRIMARY KEY AUTO_INCREMENT,
     airline VARCHAR(20) NOT NULL, -- 항공사 (같은 기종이어도 항공사마다 최대 좌석 수 다름)
-    model VARCHAR(50), NOT NULL-- B747, A380 등
-    max_seat INT NOT NULL, -- 최대 좌석 수
+    model VARCHAR(50) NOT NULL, -- B747, A380 등
+    max_seat INT NOT NULL -- 최대 좌석 수
 );
 
 CREATE TABLE schedule (
@@ -37,7 +37,7 @@ CREATE TABLE user (
     name VARCHAR(50) NOT NULL,
     password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    isManager BOOLEAN DEFAULT FALSE, -- 항공편 관리 가능한 사람인지 (프로그램에서 직접 주는거 X, 회원가입 후 DB 직접 수정해서 true로 바꿔줘야 함)
+    isManager BOOLEAN DEFAULT FALSE NOT NULL, -- 항공편 관리 가능한 사람인지 (프로그램에서 직접 주는거 X, 회원가입 후 DB 직접 수정해서 true로 바꿔줘야 함)
     salt VARCHAR(16) NOT NULL
 );
 
@@ -49,5 +49,5 @@ CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지
 
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
-    FOREIGN KEY (selected_seat) REFERENCES schedule_seat(id)
+    FOREIGN KEY (selected_seat) REFERENCES flight_occupancies(id)
 );
