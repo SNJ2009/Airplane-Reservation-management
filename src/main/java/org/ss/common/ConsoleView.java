@@ -16,12 +16,12 @@ public class ConsoleView {
     }
 
     public static void info(String message){
-        System.out.println("[INFO] : " +message);
+        System.out.println("[INFO] : " +message+ "\n");
     }
-    public static void message(String message) { System.out.println(message); }
+    public static void message(String message) { System.out.println(message+ "\n"); }
 
     public static void error(String message){
-        System.err.println("[ERROR] : " +message);
+        System.err.println("[ERROR] : " +message+ "\n");
     }
 
     public static void asciArt(){

@@ -34,7 +34,7 @@ public class ScheduleService {
         }
         else if (action.equals("remove")) { // 스케줄 삭제
             if(isNotManager()) return;
-            if(Command.isInvalidLength(cmd, 4)) return;
+            if(Command.isInvalidLength(cmd, 4)) return; // air schedule remove id
             // 여기 만들어야 함
         }
         else if (!Command.isInvalidLength(cmd, 4)){ // 필터링 조회

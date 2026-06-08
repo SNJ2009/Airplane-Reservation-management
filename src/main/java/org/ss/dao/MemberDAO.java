@@ -6,7 +6,6 @@ import org.ss.db.DBUtil;
 import org.ss.entity.Member;
 
 public class MemberDAO {
-    @SneakyThrows
     public void save(Member member){
         String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -21,7 +20,6 @@ public class MemberDAO {
         );
     }
 
-    @SneakyThrows
     public Member findById(String id){
         String sql = "SELECT * FROM user WHERE id = ?";
 
