@@ -1,35 +1,24 @@
 package org.ss.controller;
 
 import org.ss.common.ConsoleView;
-import org.ss.services.BookService;
-import org.ss.services.MemberService;
-import org.ss.services.ScheduleService;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
 
 public class Command {
-    private static final MemberService memberService = new MemberService();
-    private static final ScheduleService scheduleService = new ScheduleService();
-    private static final BookService bookService = new BookService();
+    private static final MemberController MEMBER_CONTROLLER = new MemberController();
+    private static final ScheduleController SCHEDULE_CONTROLLER = new ScheduleController();
+    private static final BookController BOOK_CONTROLLER = new BookController();
 
     private static final HashMap<String, Consumer<String[]>> commandMap = new HashMap<>();
 
     static {
         commandMap.put("help", command -> ConsoleView.commands());
-        commandMap.put("user", command -> {
-//            System.out.println(command.length);
-            memberService.user(command);
-        });
-        commandMap.put("schedule", command -> {
-            scheduleService.schedule(command);
-        });
-        commandMap.put("book", command -> {
-            bookService.book(command);
-        });
+        commandMap.put("user", command -> MEMBER_CONTROLLER.user(command));
+        commandMap.put("schedule", command -> SCHEDULE_CONTROLLER.schedule(command));
+        commandMap.put("book", command -> BOOK_CONTROLLER.book(command));
     }
     public static String[] parseCommand(String command){
-//        System.out.println("[Command] "+command);
         if(command.isEmpty() || !command.startsWith("air")){ // cmd에 아무것도 없음
             return null;
         }
@@ -37,13 +26,12 @@ public class Command {
         command = command.strip();
         String[] commands = command.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 
-        for(int i = 0; i < commands.length; i++){
+        for(int i = 0; i < commands.length; i++){ // "" 제거
             if(commands[i].startsWith("\"") && commands[i].endsWith("\"")){
                 commands[i] = commands[i].substring(1, commands[i].length() - 1);
             }
         }
         return commands;
-//        System.out.println(Arrays.toString(commands));
     }
 
     // 명령어 실행부분
@@ -62,31 +50,26 @@ public class Command {
     }
 
     /**
-     * 명령어 배열의 길이가 요구하는 배열의 길이를 만족하는지 검사 <br>
-     * 기준에 만족하지 않으면 "Invalid command length" 출력
+     * 명령어 배열의 길이가 요구하는 범위를 만족하는지 검사
+     * 범위를 만족하지 못하면 IllegalArgumentException
      *
      * @param command 입력받은 명령어 배열
      * @param requiredLength 요구 배열 길이
-     * @return 요구하는 배열의 길이를 만족하지 못하면 {@code true}, 그 외 {@code false}
      */
-    public static boolean isInvalidLength(String[] command, int requiredLength){
-        return isInvalidLength(command, requiredLength, requiredLength);
+    public static void validLength(String[] command, int requiredLength){
+        validLength(command, requiredLength, requiredLength);
     }
 
     /**
-     * 명령어 배열의 길이가 요구하는 배열의 길이를 만족하는지 검사 <br>
-     * 기준에 만족하지 않으면 "Invalid command length" 출력
+     * 명령어 배열의 길이가 요구하는 최소/최대 범위를 만족하는지 검사
+     * 범위를 만족하지 못하면 IllegalArgumentException
      *
      * @param command 입력받은 명령어 배열
      * @param minLength 입력받은 배열의 최소 길이
      * @param maxLength 입력받은 배열의 최대 길이
-     * @return 요구하는 배열의 길이를 만족하지 못하면 {@code true}, 그 외 {@code false}
      */
-    public static boolean isInvalidLength(String[] command, int minLength, int maxLength){
-        if(command.length > maxLength || command.length < minLength){
-            ConsoleView.error("Invalid command length");
-            return true;
-        }
-        return false;
+    public static void validLength(String[] command, int minLength, int maxLength){
+        if(command.length > maxLength || command.length < minLength)
+            throw new IllegalArgumentException("Invalid command length");
     }
 }

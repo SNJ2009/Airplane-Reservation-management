@@ -1,3 +1,5 @@
 db.url=DB URL 입력 (예 : jdbc:mysql://localhost:3306/airline_db)
 db.user=User 이름 입력 (예 : root)
 db.password=비밀번호 입력
+
+crypto.pepper = 페퍼 값 입력 (예 : I am a Pepper)

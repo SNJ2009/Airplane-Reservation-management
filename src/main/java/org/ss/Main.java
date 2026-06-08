@@ -4,6 +4,8 @@ import org.ss.common.ConsoleView;
 import org.ss.common.Scan;
 import org.ss.controller.Command;
 
+import java.util.NoSuchElementException;
+
 public class Main {
     public static void main(String[] args) {
         ConsoleView.line(200);
@@ -13,11 +15,15 @@ public class Main {
         System.out.println("=============================================================");
 
         while(true) {
-            System.out.print(" > ");
-            String command = Scan.line();
+            try {
+                System.out.print(" > ");
+                String command = Scan.line();
 
-            String[] parsedCommand = Command.parseCommand(command);
-            Command.executeCommand(parsedCommand);
+                String[] parsedCommand = Command.parseCommand(command);
+                Command.executeCommand(parsedCommand);
+            } catch (Exception e) {
+                ConsoleView.error(e.getMessage());
+            }
         }
     }
 }

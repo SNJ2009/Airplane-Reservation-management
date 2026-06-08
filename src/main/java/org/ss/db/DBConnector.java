@@ -27,7 +27,6 @@ public class DBConnector {
             String pwd = props.getProperty("db.password");
 
             this.connection = DriverManager.getConnection(url, user, pwd);
-
         } catch (Exception e) {
             ConsoleView.error("DB Connection Fail : " + e);
         }

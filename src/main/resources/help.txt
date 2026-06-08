@@ -1,0 +1,17 @@
+USER ------------------------------------------------------------------------------------------
+[SignUp] air user signup "ID" "비밀번호"
+[Login] air user login "ID" "이름" "비밀번호" "전화번호"
+MANAGEMENT ------------------------------------------------------------------------------------
+[Plane Add] air plane add "항공사" "항공기 모델" 좌석수
+[Plane Remove] air plane remove 항공기ID
+[Planes] air plane
+[Planes(Filter)] air plane "항공사" "항공기 모델"
+[Schedule Add] air schedule add 항공기ID 출발지 도착지 "출발시간(YYYY-MM-DD HH:MM-SS)" 소요시간
+[Schedule Remove] air schedule remove 항공기ID
+FLIGHTS ---------------------------------------------------------------------------------------
+[Schedules] air schedule
+[Schedules(Filter)] air schedule 출발지 도착지
+[Booked] air booked
+[Book Add] air book add
+[Book Cancel] air book remove
+-----------------------------------------------------------------------------------------------

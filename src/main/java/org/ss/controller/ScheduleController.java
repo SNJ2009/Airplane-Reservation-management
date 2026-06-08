@@ -1,30 +1,31 @@
-package org.ss.services;
+package org.ss.controller;
 
 import org.ss.common.ConsoleView;
-import org.ss.controller.Command;
 import org.ss.dao.ScheduleDAO;
 import org.ss.entity.Member;
 import org.ss.entity.Schedule;
+import org.ss.exception.AccessException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ScheduleService {
+public class ScheduleController {
     private final ScheduleDAO scheduleDAO = new ScheduleDAO();
 
     public void schedule(String[] cmd) {
         // air schedule // air schedule dep des // air schedule add p_i dep des run fl // air schedule remove id
-        if(Command.isInvalidLength(cmd, 2, 8)) return;
+        Command.validLength(cmd, 2, 8);
         if(cmd.length == 2) { list(); return; } // air schedule 라면 전체조회
 
         String action = cmd[2];
         if(action.equals("add")){ // 스케줄 추가
-            if(isNotManager()) return;
-            if(Command.isInvalidLength(cmd, 8)) return;
+            isNotManager();
+            Command.validLength(cmd, 8);
 
             int planeId = Integer.parseInt(cmd[3]);
             String departure = cmd[4];
             String destination = cmd[5];
+
             // air schedule add 1 ICN JFK "2026-06-07 10:00:00" 850
             LocalDateTime departureTime = LocalDateTime.parse(cmd[6].replace(" ", "T"));
             int flyTime = Integer.parseInt(cmd[7]);
@@ -33,48 +34,36 @@ public class ScheduleService {
             scheduleDAO.save(new Schedule(0, planeId, departure, destination, departureTime, flyTime, ""));
         }
         else if (action.equals("remove")) { // 스케줄 삭제
-            if(isNotManager()) return;
-            if(Command.isInvalidLength(cmd, 4)) return; // air schedule remove id
-            // 여기 만들어야 함
+            isNotManager();
+            Command.validLength(cmd, 4); // air schedule remove id
+
+            int id = Integer.parseInt(cmd[3]);
+            scheduleDAO.remove(id);
         }
-        else if (!Command.isInvalidLength(cmd, 4)){ // 필터링 조회
+        else if (cmd.length == 4){ // 필터링 조회
             show(cmd[2], cmd[3]);
         }
-        else ConsoleView.error(action + " is not a valid action");
+        else throw new IllegalArgumentException(action + " is not a valid action"); // 잘못된 명령어
     }
 
     public void list(){ // 스케줄 전체 다 보여주기
         List<Schedule> scheduleList = scheduleDAO.getScheduleList();
-        printSchedule(scheduleList);
+        ConsoleView.printScheduleList(scheduleList);
     }
 
     public void show(String departure, String destination) { // 출발지, 도착지 필터링해서 보여주기
         List<Schedule> scheduleList = scheduleDAO.getScheduleList(departure, destination);
-        printSchedule(scheduleList);
-    }
-
-    private void printSchedule(List<Schedule> scheduleList){
-        if(scheduleList.isEmpty()){
-            ConsoleView.message("조회된 비행 스케줄 없음");
-            return;
-        }
-
-        for(Schedule schedule : scheduleList){
-            ConsoleView.message(schedule.toString());
-        }
+        ConsoleView.printScheduleList(scheduleList);
     }
 
     /**
      * add / remove 명렁을 실행한 유저가 관리자 권한이 있는지 확인
-     * @return 권한이 없으면 {@code true} 반환, 그 외 {@code false}
      */
-    private boolean isNotManager(){
+    private void isNotManager() {
         boolean isManager = Member.getInstance().isManager();
 
         if(!isManager){
-            ConsoleView.error("권한이 없습니다.");
-            return true;
+            throw new AccessException("Access denied");
         }
-        return false;
     }
 }

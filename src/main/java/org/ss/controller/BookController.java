@@ -1,6 +1,6 @@
-package org.ss.services;
+package org.ss.controller;
 
-public class BookService {
+public class BookController {
     public static void list(){ // 임시 메소드
 
     }
