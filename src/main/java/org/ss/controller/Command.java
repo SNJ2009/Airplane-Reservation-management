@@ -9,6 +9,7 @@ public class Command {
     private static final MemberController MEMBER_CONTROLLER = new MemberController();
     private static final ScheduleController SCHEDULE_CONTROLLER = new ScheduleController();
     private static final BookController BOOK_CONTROLLER = new BookController();
+    private static final PlaneController PLANE_CONTROLLER = new PlaneController();
 
     private static final HashMap<String, Consumer<String[]>> commandMap = new HashMap<>();
 
@@ -16,6 +17,7 @@ public class Command {
         commandMap.put("help", command -> ConsoleView.commands());
         commandMap.put("user", command -> MEMBER_CONTROLLER.user(command));
         commandMap.put("schedule", command -> SCHEDULE_CONTROLLER.schedule(command));
+        commandMap.put("plane", command -> PLANE_CONTROLLER.plane(command));
         commandMap.put("book", command -> BOOK_CONTROLLER.book(command));
     }
     public static String[] parseCommand(String command){

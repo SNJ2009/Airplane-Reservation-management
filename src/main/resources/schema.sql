@@ -22,14 +22,14 @@ CREATE TABLE schedule (
     FOREIGN KEY (plane_id) REFERENCES plane(id)
 );
 
-CREATE TABLE flight_occupancies ( -- 좌석 상태
+CREATE TABLE seat ( -- 좌석 상태
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
-    seat VARCHAR(10) NOT NULL, -- A1, B2 . . .
-    is_take BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
+    seat_number VARCHAR(10) NOT NULL, -- A1, B2 . . .
+    is_booked BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
 
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
-    UNIQUE(schedule_id, seat) -- Composite Unique
+    UNIQUE(schedule_id, seat_number) -- Composite Unique
 );
 
 CREATE TABLE user (
@@ -41,7 +41,7 @@ CREATE TABLE user (
     salt VARCHAR(24) NOT NULL
 );
 
-CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지
+CREATE TABLE ticket ( -- 누가 어떤 좌석 예약했는지
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id VARCHAR(50), -- 예약한 유저
     schedule_id INT, -- 어떤 항공편 좌석인지 ( 항공편 id )
@@ -49,5 +49,5 @@ CREATE TABLE reservation ( -- 누가 어떤 좌석 예약했는지
 
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
-    FOREIGN KEY (selected_seat) REFERENCES flight_occupancies(id)
+    FOREIGN KEY (selected_seat) REFERENCES seat(id)
 );

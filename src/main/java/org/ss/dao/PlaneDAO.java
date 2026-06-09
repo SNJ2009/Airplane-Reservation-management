@@ -18,6 +18,7 @@ public class PlaneDAO {
                 plane.getModel(),
                 plane.getMaxSeat()
         );
+        ConsoleView.printPlaneList(getList(plane.getAirline(), plane.getModel()));
     }
     public void remove(int id) {
         String sql = "DELETE FROM plane WHERE id = ?";
