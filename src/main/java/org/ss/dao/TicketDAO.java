@@ -19,22 +19,22 @@ public class TicketDAO {
                 ticket.getSelectedSeat()
         );
     }
-    public void delete(int id, int userId) {
+    public void delete(int id, String userId) {
         String sql = "DELETE FROM ticket WHERE id = ? AND user_id = ?";
         DBUtil.executeUpdate(sql, id, userId);
     }
 
-    public Ticket findById(int userId) {
+    public Ticket findById(String userId) {
         String sql = "SELECT * FROM ticket WHERE user_id = ?"; // 이거 JOIN으로 바꿔야할듯
 
         return DBUtil.executeQueryForObject(sql, this::mapToRow, userId);
     }
 
-    public List<Ticket> ticketList(int userId, int scheduleId) {
+    public List<Ticket> ticketList(String userId, int scheduleId) {
         String sql = "SELECT * FROM ticket WHERE user_id = ? AND schedule_id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
     }
-    public List<Ticket> ticketList(int userId) {
+    public List<Ticket> ticketList(String userId) {
         String sql = "SELECT * FROM ticket WHERE user_id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow);
     }

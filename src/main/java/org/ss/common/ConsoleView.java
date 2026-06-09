@@ -2,8 +2,8 @@ package org.ss.common;
 
 import org.ss.entity.Plane;
 import org.ss.entity.Schedule;
+import org.ss.entity.Ticket;
 
-import java.awt.print.Book;
 import java.util.List;
 
 public class ConsoleView {
@@ -33,7 +33,7 @@ public class ConsoleView {
     public static void printPlaneList(List<Plane> list){
         printList(list, "조회된 항공기 없음");
     }
-    public static void printBookList(List<Book> list){
+    public static void printTicketList(List<Ticket> list){
         printList(list, "조회된 예약 없음");
     }
     private static <T> void printList(List<T> list, String message){
