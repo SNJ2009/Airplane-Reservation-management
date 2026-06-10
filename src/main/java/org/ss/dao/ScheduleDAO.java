@@ -1,6 +1,7 @@
 package org.ss.dao;
 
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 import org.ss.common.ConsoleView;
 import org.ss.db.DBUtil;
 import org.ss.entity.Plane;
@@ -13,14 +14,12 @@ import java.util.List;
 public class ScheduleDAO {
     private static final PlaneDAO planeDAO = new PlaneDAO();
 
-    public void save(Schedule schedule){
+    public void save(@NotNull Schedule schedule){
         String sql = "INSERT INTO schedule (plane_id, departure, arrival, run_time, flight_time) VALUES (?, ?, ?, ?, ?)";
 
         Plane plane = planeDAO.findById(schedule.getPlaneId());
-        if(plane == null){
-            ConsoleView.error("Plane not found");
-            return;
-        }
+        if(plane == null) throw new RuntimeException("Plane not found");
+
         DBUtil.executeUpdate(
                 sql,
                 schedule.getPlaneId(),

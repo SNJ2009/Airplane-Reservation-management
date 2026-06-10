@@ -4,10 +4,16 @@ import org.ss.common.ConsoleView;
 import org.ss.dao.PlaneDAO;
 import org.ss.entity.Plane;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class PlaneController {
     private final PlaneDAO planeDAO = new PlaneDAO();
+//    private Map<String, Consumer<String[]>> commandMap = new HashMap<>();
+
+//    public PlaneController(){}
 
     public void plane(String[] cmd){
         Command.validLength(cmd, 2, 6);

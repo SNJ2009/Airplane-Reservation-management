@@ -15,7 +15,7 @@ public class TicketController {
     private static final ScheduleController SCHEDULE_CONTROLLER = new ScheduleController();
     private static final Member MEMBER = Member.getInstance();
 
-    private static Map<String, Consumer<String[]>> commandMap = new HashMap<>();
+    private Map<String, Consumer<String[]>> commandMap = new HashMap<>();
     public TicketController() {
         commandMap.put("add", this::addTicket);
         commandMap.put("remove", this::removeTicket);
