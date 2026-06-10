@@ -15,7 +15,7 @@ CREATE TABLE schedule (
     id INT PRIMARY KEY AUTO_INCREMENT,
     plane_id INT,
     departure CHAR(3) NOT NULL, -- 출발지
-    destination CHAR(3) NOT NULL, -- 도착지
+    arrival CHAR(3) NOT NULL, -- 도착지
     run_time DATETIME NOT NULL, -- 출발시간
     flight_time INT NOT NULL, -- 소요시간/분
 

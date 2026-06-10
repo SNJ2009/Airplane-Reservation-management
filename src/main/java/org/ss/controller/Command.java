@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 public class Command {
     private static final MemberController MEMBER_CONTROLLER = new MemberController();
     private static final ScheduleController SCHEDULE_CONTROLLER = new ScheduleController();
-    private static final BookController BOOK_CONTROLLER = new BookController();
+    private static final TicketController TICKET_CONTROLLER = new TicketController();
     private static final PlaneController PLANE_CONTROLLER = new PlaneController();
 
     private static final HashMap<String, Consumer<String[]>> commandMap = new HashMap<>();
@@ -18,7 +18,7 @@ public class Command {
         commandMap.put("user", command -> MEMBER_CONTROLLER.user(command));
         commandMap.put("schedule", command -> SCHEDULE_CONTROLLER.schedule(command));
         commandMap.put("plane", command -> PLANE_CONTROLLER.plane(command));
-        commandMap.put("book", command -> BOOK_CONTROLLER.book(command));
+        commandMap.put("book", command -> TICKET_CONTROLLER.ticket(command));
     }
     public static String[] parseCommand(String command){
         if(command.isEmpty() || !command.startsWith("air")){ // cmd에 아무것도 없음

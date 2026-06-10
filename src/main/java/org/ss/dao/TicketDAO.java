@@ -19,7 +19,7 @@ public class TicketDAO {
                 ticket.getSelectedSeat()
         );
     }
-    public void delete(int id, String userId) {
+    public void delete(String userId, int id) {
         String sql = "DELETE FROM ticket WHERE id = ? AND user_id = ?";
         DBUtil.executeUpdate(sql, id, userId);
     }
@@ -30,13 +30,48 @@ public class TicketDAO {
         return DBUtil.executeQueryForObject(sql, this::mapToRow, userId);
     }
 
-    public List<Ticket> ticketList(String userId, int scheduleId) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ? AND schedule_id = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
-    }
+    /**
+     * 로그인한 유저의 ID를 기준으로 필터링 후 리스트 반환
+     * @param userId 유저 ID
+     * @return DB 조회 후, 조회 결과 리스트로 반환
+     */
     public List<Ticket> ticketList(String userId) {
         String sql = "SELECT * FROM ticket WHERE user_id = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow);
+        return DBUtil.executeQueryForList(sql, this::mapToRow, userId);
+    }
+
+    /**
+     * 로그인한 유저 ID 기준으로 출발지와 도착지로 필터링 해 리스트로 반환
+     * @param userId 유저 ID
+     * @param departure 출발지
+     * @param arrival 도착지
+     * @return 조회 결과 리스트로 반환
+     */
+    public List<Ticket> ticketList(String userId, String departure, String arrival) {
+        String sql = "SELECT * FROM ticket WHERE user_id = ? AND departure = ? AND arrival = ?";
+        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, departure, arrival);
+    }
+
+    /**
+     * ID 기준 조회, 도착지로 필터링
+     * @param userId 유저 ID
+     * @param arrival 도착지
+     * @return 리스트로 반환
+     */
+    public List<Ticket> ticketList(String userId, String arrival) {
+        String sql = "SELECT * FROM ticket WHERE user_id = ? AND arrival = ?";
+        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, arrival);
+    }
+
+    /**
+     * 유저 ID + 스케줄 ID로 조회
+     * @param userId 유저 ID
+     * @param scheduleId 스케줄 ID
+     * @return 리스트로
+     */
+    public List<Ticket> ticketList(String userId, int scheduleId) {
+        String sql = "SELECT * FROM ticket WHERE user_id = ? AND 여기 JOIN한 다음에 저거 그거 해야 그거 가능한데 그건 좀 그건가? 아 그건 또 아닌듯 암튼 조인해서 그거 해야 함 = ?";
+        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
     }
 
     private Ticket mapToRow(ResultSet rs) {

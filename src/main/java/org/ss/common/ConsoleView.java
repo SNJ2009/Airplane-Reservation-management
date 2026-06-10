@@ -16,15 +16,21 @@ public class ConsoleView {
         System.out.println("[Plane Remove]      air plane remove 항공기ID");
         System.out.println("[Planes]            air plane");
         System.out.println("[Planes(Filter)]    air plane \"항공사\" \"항공기 모델\"");
-        System.out.println("[Schedule Add]      air schedule add 항공기ID 출발지 도착지 \"출발시간(YYYY-MM-DD HH:MM-SS)\" 소요시간");
+        System.out.println("[Schedule Add]      air schedule add 항공기ID 출발지 도착지 \"출발시간(YYYY-MM-DD HH:MM:SS)\" 소요시간(분)");
         System.out.println("[Schedule Remove]   air schedule remove 항공기ID");
         System.out.println("FLIGHTS ---------------------------------------------------------------------------------------");
         System.out.println("[Schedules]         air schedule");
         System.out.println("[Schedules(Filter)] air schedule 출발지 도착지");
-        System.out.println("[Booked]            air booked");
+        System.out.println("[Booked]            air book");
+        System.out.println("[Booked]            air book 출발지 도착지");
+        System.out.println("[Booked]            air book 도착지");
+        System.out.println("[Booked]            air book 항공편ID");
         System.out.println("[Book Add]          air book add");
         System.out.println("[Book Cancel]       air book remove");
         System.out.println("-----------------------------------------------------------------------------------------------");
+        System.out.println(Color.YELLOW+ "출발지/도착지 모두 IATA 공항 코드 사용 (ICN, NRT, NYC. . . )\n" +
+                "띄어쓰기 없는 경우 \"\" 생략 가능, 띄어쓰기 포함 시 \"\" 필수\n" +
+                "예약 정보 조회/추가/삭제 시 로그인 필수" +Color.RESET);
     }
 
     public static void printScheduleList(List<Schedule> list){

@@ -14,7 +14,7 @@ public class ScheduleDAO {
     private static final PlaneDAO planeDAO = new PlaneDAO();
 
     public void save(Schedule schedule){
-        String sql = "INSERT INTO schedule (plane_id, departure, destination, run_time, flight_time) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (plane_id, departure, arrival, run_time, flight_time) VALUES (?, ?, ?, ?, ?)";
 
         Plane plane = planeDAO.findById(schedule.getPlaneId());
         if(plane == null){
@@ -25,7 +25,7 @@ public class ScheduleDAO {
                 sql,
                 schedule.getPlaneId(),
                 schedule.getDeparture(),
-                schedule.getDestination(),
+                schedule.getArrival(),
                 schedule.getDepartureTime(),
                 schedule.getFlightTime()
         );
@@ -48,14 +48,14 @@ public class ScheduleDAO {
 
         return DBUtil.executeQueryForList(sql, this::mapToRow);
     }
-    public List<Schedule> getScheduleList(String departure, String destination){ // 출발지, 도착지 필터링
+    public List<Schedule> getScheduleList(String departure, String arrival){ // 출발지, 도착지 필터링
         String sql =
                 "SELECT s.*, p.airline, p.model " +
                 "FROM schedule s " +
                 "JOIN plane p ON s.plane_id = p.id " +
-                "WHERE s.departure = ? AND s.destination = ?";
+                "WHERE s.departure = ? AND s.arrival = ?";
 
-        return DBUtil.executeQueryForList(sql, this::mapToRow, departure, destination);
+        return DBUtil.executeQueryForList(sql, this::mapToRow, departure, arrival);
     }
 
     public void remove(int id) {
@@ -70,7 +70,7 @@ public class ScheduleDAO {
                     rs.getInt("id"),
                     rs.getInt("plane_id"),
                     rs.getString("departure"),
-                    rs.getString("destination"),
+                    rs.getString("arrival"),
                     rs.getObject("run_time", LocalDateTime.class),
                     rs.getInt("flight_time"),
                     rs.getString("airline") + " (" + rs.getString("model") + ")"

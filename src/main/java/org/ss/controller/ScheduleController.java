@@ -24,14 +24,14 @@ public class ScheduleController {
 
             int planeId = Integer.parseInt(cmd[3]);
             String departure = cmd[4];
-            String destination = cmd[5];
+            String arrival = cmd[5];
 
             // air schedule add 1 ICN JFK "2026-06-07 10:00:00" 850
             LocalDateTime departureTime = LocalDateTime.parse(cmd[6].replace(" ", "T"));
             int flyTime = Integer.parseInt(cmd[7]);
 
             // id 부분 0이랑, planeInfo 부분 ""은 DB에 들어가는 값 아니라 파라미터 수 맞추기용
-            scheduleDAO.save(new Schedule(0, planeId, departure, destination, departureTime, flyTime, ""));
+            scheduleDAO.save(new Schedule(0, planeId, departure, arrival, departureTime, flyTime, ""));
         }
         else if (action.equals("remove")) { // 스케줄 삭제
             isNotManager();
@@ -51,8 +51,8 @@ public class ScheduleController {
         ConsoleView.printScheduleList(scheduleList);
     }
 
-    public void show(String departure, String destination) { // 출발지, 도착지 필터링해서 보여주기
-        List<Schedule> scheduleList = scheduleDAO.getScheduleList(departure, destination);
+    public void show(String departure, String arrival) { // 출발지, 도착지 필터링해서 보여주기
+        List<Schedule> scheduleList = scheduleDAO.getScheduleList(departure, arrival);
         ConsoleView.printScheduleList(scheduleList);
     }
 
