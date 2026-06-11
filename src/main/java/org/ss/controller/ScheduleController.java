@@ -51,17 +51,15 @@ public class ScheduleController {
         LocalDateTime departureTime = LocalDateTime.parse(cmd[6].replace(" ", "T"));
         int flyTime = Integer.parseInt(cmd[7]);
 
-        // 저장 후 PK값 받아오기
         // id 부분 0이랑, planeInfo 부분 ""은 DB에 들어가는 값 아니라 파라미터 수 맞추기용
-        int scheduleID = scheduleDAO.save(new Schedule(0, planeId, departure, arrival, departureTime, flyTime, ""));
+        int key = scheduleDAO.save(new Schedule(0, planeId, departure, arrival, departureTime, flyTime, ""));
 
         // 스케줄에 맞는 좌석 만들기
-        int planeID2 = scheduleDAO.findById(scheduleID).getPlaneId();
-        int maxSeatNumber = planeDAO.findById(planeID2).getMaxSeat();
+        int maxSeatNumber = planeDAO.findById(planeId).getMaxSeat();
 
         for(int i = 0; i < maxSeatNumber; i++) { // 좌석 번호 지정하고(1, 2, 3. . .), DB에 추가
             int seatNumber = i + 1;
-            seatDAO.save(new Seat(0, scheduleID, seatNumber, false));
+            seatDAO.save(new Seat(0, key, seatNumber, false));
         }
     }
 

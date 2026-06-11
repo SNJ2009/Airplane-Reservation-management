@@ -40,6 +40,7 @@ public class PlaneController {
             list(airline, model);
         } else throw new IllegalArgumentException("Invalid command");
     }
+
     public void addPlane(Plane plane){
         planeDAO.save(plane);
     }

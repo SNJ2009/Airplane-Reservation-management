@@ -28,7 +28,7 @@ CREATE TABLE seat ( -- 좌석 상태
     seat_number INT NOT NULL, -- 1번 좌석, 2번 좌석 . . .
     is_booked BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
 
-    FOREIGN KEY (schedule_id) REFERENCES schedule(id),
+    FOREIGN KEY (schedule_id) REFERENCES schedule(id) ON DELETE CASCADE,
     UNIQUE(schedule_id, seat_number) -- Composite Unique
 );
 
@@ -48,6 +48,6 @@ CREATE TABLE ticket ( -- 누가 어떤 좌석 예약했는지
     selected_seat INT, -- 좌석번호 FK (좌석 번호 id)(A1, A2 , , , )
 
     FOREIGN KEY (user_id) REFERENCES user(id),
-    FOREIGN KEY (schedule_id) REFERENCES schedule(id),
-    FOREIGN KEY (selected_seat) REFERENCES seat(id)
+    FOREIGN KEY (schedule_id) REFERENCES schedule(id) ON DELETE CASCADE,
+    FOREIGN KEY (selected_seat) REFERENCES seat(id) ON DELETE CASCADE
 );

@@ -10,6 +10,7 @@ import java.util.List;
 public class TicketDAO {
     public void save( Ticket ticket) {
         String sql = "INSERT INTO ticket(user_id, schedule_id, selected_seat) VALUES (?, ?, ?)";
+
         DBUtil.executeUpdate(
                 sql,
                 ticket.getUserId(),

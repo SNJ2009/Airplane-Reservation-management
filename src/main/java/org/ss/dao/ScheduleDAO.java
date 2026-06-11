@@ -14,8 +14,7 @@ public class ScheduleDAO {
 
     public int save(Schedule schedule){
         String sql = "INSERT INTO schedule (plane_id, departure, arrival, start_time, flight_time) " +
-                "VALUES (?, ?, ?, ?, ?)" +
-                "RETURNING id;";
+                "VALUES (?, ?, ?, ?, ?)";
 
         Plane plane = planeDAO.findById(schedule.getPlaneId());
         if(plane == null) throw new RuntimeException("Plane not found");
