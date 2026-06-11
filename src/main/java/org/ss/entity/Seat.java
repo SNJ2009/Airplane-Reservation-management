@@ -10,6 +10,6 @@ import lombok.*;
 public class Seat {
     private int id;
     private int scheduleId;
-    private String seatNumber;
+    private int seatNumber;
     private boolean isBooked;
 }

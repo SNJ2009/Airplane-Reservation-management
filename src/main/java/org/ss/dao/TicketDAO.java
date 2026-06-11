@@ -1,6 +1,5 @@
 package org.ss.dao;
 
-import org.jetbrains.annotations.NotNull;
 import org.ss.common.ConsoleView;
 import org.ss.db.DBUtil;
 import org.ss.entity.Ticket;
@@ -9,7 +8,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class TicketDAO {
-    public void save(@NotNull Ticket ticket) {
+    public void save( Ticket ticket) {
         String sql = "INSERT INTO ticket(user_id, schedule_id, selected_seat) VALUES (?, ?, ?)";
         DBUtil.executeUpdate(
                 sql,

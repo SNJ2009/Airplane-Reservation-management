@@ -1,7 +1,5 @@
 package org.ss.dao;
 
-import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
 import org.ss.common.ConsoleView;
 import org.ss.db.DBUtil;
 import org.ss.entity.Plane;
@@ -14,13 +12,15 @@ import java.util.List;
 public class ScheduleDAO {
     private static final PlaneDAO planeDAO = new PlaneDAO();
 
-    public void save(@NotNull Schedule schedule){
-        String sql = "INSERT INTO schedule (plane_id, departure, arrival, run_time, flight_time) VALUES (?, ?, ?, ?, ?)";
+    public int save(Schedule schedule){
+        String sql = "INSERT INTO schedule (plane_id, departure, arrival, start_time, flight_time) " +
+                "VALUES (?, ?, ?, ?, ?)" +
+                "RETURNING id;";
 
         Plane plane = planeDAO.findById(schedule.getPlaneId());
         if(plane == null) throw new RuntimeException("Plane not found");
 
-        DBUtil.executeUpdate(
+        return DBUtil.executeUpdate(
                 sql,
                 schedule.getPlaneId(),
                 schedule.getDeparture(),
@@ -35,7 +35,8 @@ public class ScheduleDAO {
                 "SELECT s.*, p.airline, p.model " +
                 "FROM schedule s " +
                 "JOIN plane p ON s.plane_id = p.id " +
-                "WHERE s.id = ?";
+                "WHERE s.id = ? " +
+                        "ORDER BY s.departure ASC, s.arrival ASC, start_time ASC, flight_time ASC";
 
         return DBUtil.executeQueryForObject( sql, this::mapToRow, id );
     }
@@ -43,7 +44,8 @@ public class ScheduleDAO {
         String sql =
                 "SELECT s.*, p.airline, p.model " +
                 "FROM schedule s " +
-                "JOIN plane p ON s.plane_id = p.id";
+                "JOIN plane p ON s.plane_id = p.id " +
+                        "ORDER BY s.departure ASC, s.arrival ASC, start_time ASC, flight_time ASC";
 
         return DBUtil.executeQueryForList(sql, this::mapToRow);
     }
@@ -52,7 +54,8 @@ public class ScheduleDAO {
                 "SELECT s.*, p.airline, p.model " +
                 "FROM schedule s " +
                 "JOIN plane p ON s.plane_id = p.id " +
-                "WHERE s.departure = ? AND s.arrival = ?";
+                "WHERE s.departure = ? AND s.arrival = ? " +
+                        "ORDER BY s.departure ASC, s.arrival ASC, start_time ASC, flight_time ASC";
 
         return DBUtil.executeQueryForList(sql, this::mapToRow, departure, arrival);
     }
@@ -70,7 +73,7 @@ public class ScheduleDAO {
                     rs.getInt("plane_id"),
                     rs.getString("departure"),
                     rs.getString("arrival"),
-                    rs.getObject("run_time", LocalDateTime.class),
+                    rs.getObject("start_time", LocalDateTime.class),
                     rs.getInt("flight_time"),
                     rs.getString("airline") + " (" + rs.getString("model") + ")"
             );

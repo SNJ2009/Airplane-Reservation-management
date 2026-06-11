@@ -16,7 +16,7 @@ CREATE TABLE schedule (
     plane_id INT,
     departure CHAR(3) NOT NULL, -- 출발지
     arrival CHAR(3) NOT NULL, -- 도착지
-    run_time DATETIME NOT NULL, -- 출발시간
+    start_time DATETIME NOT NULL, -- 출발시간
     flight_time INT NOT NULL, -- 소요시간/분
 
     FOREIGN KEY (plane_id) REFERENCES plane(id)
@@ -25,7 +25,7 @@ CREATE TABLE schedule (
 CREATE TABLE seat ( -- 좌석 상태
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
-    seat_number VARCHAR(10) NOT NULL, -- A1, B2 . . .
+    seat_number INT NOT NULL, -- 1번 좌석, 2번 좌석 . . .
     is_booked BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
 
     FOREIGN KEY (schedule_id) REFERENCES schedule(id),
