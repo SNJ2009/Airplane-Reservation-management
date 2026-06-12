@@ -103,11 +103,12 @@ public class TicketController {
                         scheduleID,
                         selectedSeatNumber
                 ));
+            } else {
+                ConsoleView.failedBook("이미 예약된 좌석");
             }
         } catch (Exception e) {
             if(seatUpdate) SEAT_DAO.updateBooked(false, scheduleID, selectedSeatNumber, true);
-            if(key > 0) TICKET_DAO.delete(key, MEMBER.getId());
-            throw new RuntimeException("Failed to save ticket");
+            TICKET_DAO.delete(key, MEMBER.getId());
         }
     }
 

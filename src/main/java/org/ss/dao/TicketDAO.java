@@ -3,27 +3,32 @@ package org.ss.dao;
 import org.ss.common.ConsoleView;
 import org.ss.db.DBUtil;
 import org.ss.entity.Ticket;
+import org.ss.entity.TicketDetail;
 
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketDAO {
-    public int save( Ticket ticket) {
+    public int save(Ticket ticket) {
         String sql = "INSERT INTO ticket(user_id, schedule_id, selected_seat) VALUES (?, ?, ?)";
-
-        return DBUtil.executeUpdate(
+//        ConsoleView.debugger(sql);
+        int result = DBUtil.executeUpdate(
                 sql,
                 ticket.getUserId(),
                 ticket.getScheduleId(),
                 ticket.getSelectedSeat()
         );
+//        ConsoleView.debugger(result);
+        if(result == -1) throw new RuntimeException("Failed to save ticket");
+        return result;
     }
     public void delete(int ticket_id, String userId) {
         String sql = "DELETE FROM ticket WHERE id = ? AND user_id = ?";
         DBUtil.executeUpdate(sql, ticket_id, userId);
     }
 
-    public Ticket findById(int ticketId) {
+    public TicketDetail findById(int ticketId) {
         String sql = "SELECT * FROM ticket WHERE id = ?"; // 이거 JOIN으로 바꿔야할듯
 
         return DBUtil.executeQueryForObject(sql, this::mapToRow, ticketId);
@@ -34,8 +39,11 @@ public class TicketDAO {
      * @param userId 유저 ID
      * @return DB 조회 후, 조회 결과 리스트로 반환
      */
-    public List<Ticket> ticketList(String userId) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ?";
+    public List<TicketDetail> ticketList(String userId) {
+        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+                "FROM ticket t " +
+                "JOIN schedule s ON t.schedule_id = s.id " +
+                "WHERE t.user_id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId);
     }
 
@@ -46,8 +54,11 @@ public class TicketDAO {
      * @param arrival 도착지
      * @return 조회 결과 리스트로 반환
      */
-    public List<Ticket> ticketList(String userId, String departure, String arrival) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ? AND departure = ? AND arrival = ?";
+    public List<TicketDetail> ticketList(String userId, String departure, String arrival) {
+        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+                "FROM ticket t " +
+                "JOIN schedule s ON t.schedule_id = s.id " +
+                "WHERE t.user_id = ? AND s.departure = ? AND s.arrival = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, departure, arrival);
     }
 
@@ -57,8 +68,11 @@ public class TicketDAO {
      * @param arrival 도착지
      * @return 리스트로 반환
      */
-    public List<Ticket> ticketList(String userId, String arrival) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ? AND arrival = ?";
+    public List<TicketDetail> ticketList(String userId, String arrival) {
+        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+                "FROM ticket t " +
+                "JOIN schedule s ON t.schedule_id = s.id " +
+                "WHERE t.user_id = ? AND s.arrival = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, arrival);
     }
 
@@ -68,18 +82,28 @@ public class TicketDAO {
      * @param scheduleId 스케줄 ID
      * @return 리스트로
      */
-    public List<Ticket> ticketList(String userId, int scheduleId) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ? AND 여기 JOIN한 다음에 저거 그거 해야 그거 가능한데 그건 좀 그건가? 아 그건 또 아닌듯 암튼 조인해서 그거 해야 함 = ?";
+    public List<TicketDetail> ticketList(String userId, int scheduleId) {
+        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+                "FROM ticket t " +
+                "JOIN schedule s ON t.schedule_id = s.id " +
+                "WHERE t.user_id = ? AND s.id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
     }
 
-    private Ticket mapToRow(ResultSet rs) {
+    private TicketDetail mapToRow(ResultSet rs) {
         try{
-            return new Ticket(
+            return new TicketDetail(
                     rs.getInt("id"),
                     rs.getString("user_id"),
                     rs.getInt("schedule_id"),
-                    rs.getInt("selected_seat")
+                    rs.getInt("selected_seat"),
+
+//                    rs.getInt("id"),
+//                    rs.getInt("plane_id"),
+//                    rs.getString("departure"),
+//                    rs.getString("arrival"),
+//                    rs.getObject("start_time", LocalDateTime.class),
+//                    rs.getInt("flight_time")
             );
         } catch (Exception e){
             ConsoleView.error("데이터를 불러오는 중 오류가 발생했습니다. 입력값을 확인 후 다시 시도해 주세요.");

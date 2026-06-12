@@ -87,7 +87,11 @@ public class ConsoleView {
         System.out.println("[INFO] : " +message+ "\n");
     }
     public static void message(String message) { System.out.println(message+ "\n"); }
+    public static void debugger(String message) {
+        System.out.println("[DEBUGGER] : " + message + "\n");
+    } // 사실 그냥 sout 하면 그만이긴 한데 구분용이랄까?
 
+    public static void failedBook(String message){ error("예약 실패 : " +message+ " 또는 잘못된 입력"); }
     public static void error(String message){
         System.out.println(Color.RED+ "[ERROR] : " +message+ Color.RESET+ "\n");
     }
