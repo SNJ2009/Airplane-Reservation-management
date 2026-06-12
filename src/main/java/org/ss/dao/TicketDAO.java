@@ -8,25 +8,25 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class TicketDAO {
-    public void save( Ticket ticket) {
+    public int save( Ticket ticket) {
         String sql = "INSERT INTO ticket(user_id, schedule_id, selected_seat) VALUES (?, ?, ?)";
 
-        DBUtil.executeUpdate(
+        return DBUtil.executeUpdate(
                 sql,
                 ticket.getUserId(),
                 ticket.getScheduleId(),
                 ticket.getSelectedSeat()
         );
     }
-    public void delete(String userId, int id) {
+    public void delete(int ticket_id, String userId) {
         String sql = "DELETE FROM ticket WHERE id = ? AND user_id = ?";
-        DBUtil.executeUpdate(sql, id, userId);
+        DBUtil.executeUpdate(sql, ticket_id, userId);
     }
 
-    public Ticket findById(String userId) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ?"; // 이거 JOIN으로 바꿔야할듯
+    public Ticket findById(int ticketId) {
+        String sql = "SELECT * FROM ticket WHERE id = ?"; // 이거 JOIN으로 바꿔야할듯
 
-        return DBUtil.executeQueryForObject(sql, this::mapToRow, userId);
+        return DBUtil.executeQueryForObject(sql, this::mapToRow, ticketId);
     }
 
     /**

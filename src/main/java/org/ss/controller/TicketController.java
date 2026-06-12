@@ -1,6 +1,7 @@
 package org.ss.controller;
 
 import org.ss.common.ConsoleView;
+import org.ss.dao.SeatDAO;
 import org.ss.dao.TicketDAO;
 import org.ss.entity.Member;
 import org.ss.entity.Ticket;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 
 public class TicketController {
     private static final TicketDAO TICKET_DAO = new TicketDAO();
-    private static final ScheduleController SCHEDULE_CONTROLLER = new ScheduleController();
+    private static final SeatDAO SEAT_DAO = new SeatDAO();
     private static final Member MEMBER = Member.getInstance();
 
     private Map<String, Consumer<String[]>> commandMap = new HashMap<>();
@@ -85,20 +86,43 @@ public class TicketController {
         Command.validLength(cmd, 5);
 
         int scheduleID = Integer.parseInt(cmd[3]);
-        int selectedSeatID = Integer.parseInt(cmd[4]);
+        int selectedSeatNumber = Integer.parseInt(cmd[4]);
 
-        TICKET_DAO.save(new Ticket(
-                0, // save에 안들어감 그냥 파라미터 채우깅
-                MEMBER.getId(),
-                scheduleID,
-                selectedSeatID
-        ));
+        int key = 0;
+        boolean seatUpdate = false;
+        try {
+
+
+            int changedRow = SEAT_DAO.updateBooked(true, scheduleID, selectedSeatNumber, false);
+            seatUpdate = (changedRow > 0);
+
+            if(seatUpdate) {
+                key = TICKET_DAO.save(new Ticket(
+                        0, // save에 안들어감 그냥 파라미터 채우깅
+                        MEMBER.getId(),
+                        scheduleID,
+                        selectedSeatNumber
+                ));
+            }
+        } catch (Exception e) {
+            if(seatUpdate) SEAT_DAO.updateBooked(false, scheduleID, selectedSeatNumber, true);
+            if(key > 0) TICKET_DAO.delete(key, MEMBER.getId());
+            throw new RuntimeException("Failed to save ticket");
+        }
     }
 
     public void removeTicket(String[] cmd){
         Command.validLength(cmd, 4);
 
         int ticketId = Integer.parseInt(cmd[3]);
-        TICKET_DAO.delete(MEMBER.getId(), ticketId);
+        Ticket ticket = TICKET_DAO.findById(ticketId);
+
+        if(!(ticket.getUserId().equals(MEMBER.getId()))) throw new IllegalArgumentException("This Ticket does not belong to this Member");
+
+        int scheduleID = ticket.getScheduleId();
+        int selectedSeatNumber = ticket.getSelectedSeat();
+
+        TICKET_DAO.delete(ticketId, MEMBER.getId());
+        SEAT_DAO.updateBooked(false, scheduleID, selectedSeatNumber, true);
     }
 }

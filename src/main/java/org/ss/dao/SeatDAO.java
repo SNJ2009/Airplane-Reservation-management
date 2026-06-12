@@ -22,11 +22,16 @@ public class SeatDAO {
                 seat.isBooked()
         );
     }
+    public int updateBooked(boolean booked, int scheduleId, int seatNumber, boolean seatStatus){
+        String sql = "UPDATE seat SET is_booked = ? WHERE schedule_id = ? AND seat_number = ? AND is_booked = ?;";
 
-    public Seat findById(int id){
-        String sql = "SELECT * FROM seat WHERE id = ?";
-
-        return DBUtil.executeQueryForObject(sql, this::mapToRow, id);
+        return DBUtil.executeUpdateN(
+                sql,
+                booked,
+                scheduleId,
+                seatNumber,
+                seatStatus
+        );
     }
 
     private Seat mapToRow(ResultSet rs) {

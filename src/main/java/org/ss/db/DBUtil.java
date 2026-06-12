@@ -35,6 +35,19 @@ public class DBUtil {
         }
         return -1;
     }
+    public static int executeUpdateN(String sql, Object...params){
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+            return ps.executeUpdate(); // 수정된 행 개수
+
+        } catch (SQLException e) {
+            ConsoleView.error("필수 입력 정보가 누락되었거나 유효하지 않습니다");
+            return -1;
+        }
+    }
 
     public static <T> T executeQueryForObject(String sql, RowMapper<T> rm, Object... params) { // 하나만 조회
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
