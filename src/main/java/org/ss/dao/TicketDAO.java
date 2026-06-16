@@ -2,6 +2,7 @@ package org.ss.dao;
 
 import org.ss.common.ConsoleView;
 import org.ss.db.DBUtil;
+import org.ss.entity.Schedule;
 import org.ss.entity.Ticket;
 import org.ss.entity.TicketDetail;
 
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketDAO {
+    private static final ScheduleDAO scheduleDAO = new ScheduleDAO();
+
     public int save(Ticket ticket) {
         String sql = "INSERT INTO ticket(user_id, schedule_id, selected_seat) VALUES (?, ?, ?)";
 //        ConsoleView.debugger(sql);
@@ -40,9 +43,12 @@ public class TicketDAO {
      * @return DB 조회 후, 조회 결과 리스트로 반환
      */
     public List<TicketDetail> ticketList(String userId) {
-        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+        String sql = "SELECT t.id, t.user_id, t.schedule_id, t.selected_seat, " +
+                "s.id AS s_id, s.plane_id, s.departure, s.arrival, s.start_time, s.flight_time, " +
+                "p.airline, p.model " +
                 "FROM ticket t " +
                 "JOIN schedule s ON t.schedule_id = s.id " +
+                "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId);
     }
@@ -55,9 +61,12 @@ public class TicketDAO {
      * @return 조회 결과 리스트로 반환
      */
     public List<TicketDetail> ticketList(String userId, String departure, String arrival) {
-        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+        String sql = "SELECT t.id, t.user_id, t.schedule_id, t.selected_seat, " +
+                "s.id AS s_id, s.plane_id, s.departure, s.arrival, s.start_time, s.flight_time, " +
+                "p.airline, p.model " +
                 "FROM ticket t " +
                 "JOIN schedule s ON t.schedule_id = s.id " +
+                "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.departure = ? AND s.arrival = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, departure, arrival);
     }
@@ -69,9 +78,12 @@ public class TicketDAO {
      * @return 리스트로 반환
      */
     public List<TicketDetail> ticketList(String userId, String arrival) {
-        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+        String sql = "SELECT t.id, t.user_id, t.schedule_id, t.selected_seat, " +
+                "s.id AS s_id, s.plane_id, s.departure, s.arrival, s.start_time, s.flight_time, " +
+                "p.airline, p.model " +
                 "FROM ticket t " +
                 "JOIN schedule s ON t.schedule_id = s.id " +
+                "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.arrival = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, arrival);
     }
@@ -83,29 +95,36 @@ public class TicketDAO {
      * @return 리스트로
      */
     public List<TicketDetail> ticketList(String userId, int scheduleId) {
-        String sql = "SELECT t.id, s.departure, s.arrival, s.start_time, t.selected_seat " +
+        String sql = "SELECT t.id, t.user_id, t.schedule_id, t.selected_seat, " +
+                "s.id AS s_id, s.plane_id, s.departure, s.arrival, s.start_time, s.flight_time, " +
+                "p.airline, p.model " +
                 "FROM ticket t " +
                 "JOIN schedule s ON t.schedule_id = s.id " +
+                "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.id = ?";
         return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
     }
 
     private TicketDetail mapToRow(ResultSet rs) {
-        try{
+        try {
             return new TicketDetail(
-                    rs.getInt("id"),
-                    rs.getString("user_id"),
-                    rs.getInt("schedule_id"),
-                    rs.getInt("selected_seat"),
-
-//                    rs.getInt("id"),
-//                    rs.getInt("plane_id"),
-//                    rs.getString("departure"),
-//                    rs.getString("arrival"),
-//                    rs.getObject("start_time", LocalDateTime.class),
-//                    rs.getInt("flight_time")
+                    new Ticket(
+                            rs.getInt("id"),
+                            rs.getString("user_id"),
+                            rs.getInt("schedule_id"),
+                            rs.getInt("selected_seat")
+                    ),
+                    new Schedule(
+                            rs.getInt("s_id"),
+                            rs.getInt("plane_id"),
+                            rs.getString("departure"),
+                            rs.getString("arrival"),
+                            rs.getObject("start_time", LocalDateTime.class),
+                            rs.getInt("flight_time"),
+                            rs.getString("airline") + " (" +rs.getString("model") + ")"
+                    )
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             ConsoleView.error("데이터를 불러오는 중 오류가 발생했습니다. 입력값을 확인 후 다시 시도해 주세요.");
             return null;
         }

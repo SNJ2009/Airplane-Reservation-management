@@ -5,6 +5,7 @@ import org.ss.dao.SeatDAO;
 import org.ss.dao.TicketDAO;
 import org.ss.entity.Member;
 import org.ss.entity.Ticket;
+import org.ss.entity.TicketDetail;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ public class TicketController {
      * 예약된 리스트 전체 출력
      */
     public void ticketList(){
-        List<Ticket> list = TICKET_DAO.ticketList(MEMBER.getId());
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId());
         ConsoleView.printTicketList(list);
     }
 
@@ -59,7 +60,7 @@ public class TicketController {
      * @param id 스케줄 ID
      */
     public void filteredList(int id){
-        List<Ticket> list = TICKET_DAO.ticketList(MEMBER.getId(), id);
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), id);
         ConsoleView.printTicketList(list);
     }
 
@@ -68,7 +69,7 @@ public class TicketController {
      * @param arrival 도착지
      */
     public void filteredList(String arrival){
-        List<Ticket> list = TICKET_DAO.ticketList(MEMBER.getId(), arrival);
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), arrival);
         ConsoleView.printTicketList(list);
     }
 
@@ -78,7 +79,7 @@ public class TicketController {
      * @param arrival 도착지
      */
     public void filteredList(String departure, String arrival){
-        List<Ticket> list = TICKET_DAO.ticketList(MEMBER.getId(), departure, arrival);
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), departure, arrival);
         ConsoleView.printTicketList(list);
     }
 
