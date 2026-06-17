@@ -24,6 +24,7 @@ public class ScheduleController {
     public ScheduleController() {
         commandMap.put("add", this::add);
         commandMap.put("remove", this::delete);
+        commandMap.put("delay", this::delay);
     }
 
     public void schedule(String[] cmd) {
@@ -69,6 +70,18 @@ public class ScheduleController {
 
         int id = Integer.parseInt(cmd[3]);
         scheduleDAO.remove(id);
+    }
+
+    public void delay(String[] cmd){
+        isNotManager();
+        Command.validLength(cmd, 5);
+
+        int scheduleId = Integer.parseInt(cmd[3]);
+        int delayTime = Integer.parseInt(cmd[4]);
+
+        if(scheduleDAO.delayUpdate(scheduleId, delayTime) >= 1){
+            ConsoleView.successful();
+        } else throw new AccessException("Delay update failed");
     }
 
 

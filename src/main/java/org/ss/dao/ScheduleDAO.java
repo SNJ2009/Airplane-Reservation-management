@@ -64,6 +64,10 @@ public class ScheduleDAO {
 
         DBUtil.executeUpdate(sql, id);
     }
+    public int delayUpdate(int scheduleId, int delayTime) {
+        String sql = "UPDATE schedule SET start_time = DATE_ADD(start_time, INTERVAL ? MINUTE) WHERE id = ?";
+        return DBUtil.executeUpdate(sql, delayTime, scheduleId);
+    }
 
     private Schedule mapToRow(ResultSet rs) {
         try{

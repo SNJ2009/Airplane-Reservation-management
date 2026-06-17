@@ -18,7 +18,8 @@ public class ConsoleView {
         System.out.println("[Planes]            air plane");
         System.out.println("[Planes(Filter)]    air plane \"항공사\" \"항공기 모델\"");
         System.out.println("[Schedule Add]      air schedule add 항공기ID 출발지 도착지 \"출발시간(YYYY-MM-DD HH:MM:SS)\" 소요시간(분)");
-        System.out.println("[Schedule Remove]   air schedule remove 항공기ID");
+        System.out.println("[Schedule Remove]   air schedule remove 스케줄ID");
+        System.out.println("[Schedule Delay]     air schedule delay 스케줄ID 지연시간(분 단위, +/- 둘 다 가능)");
         System.out.println("FLIGHTS ---------------------------------------------------------------------------------------");
         System.out.println("[Schedules]         air schedule");
         System.out.println("[Schedules(Filter)] air schedule 출발지 도착지");
