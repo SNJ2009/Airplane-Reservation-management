@@ -31,15 +31,15 @@ public class TicketDAO {
         DBUtil.executeUpdate(sql, ticket_id, userId);
     }
 
-    public TicketDetail findById(int ticketId) {
+    public Ticket findById(int ticketId) {
         String sql = "SELECT * FROM ticket WHERE id = ?"; // 이거 JOIN으로 바꿔야할듯
 
-        return DBUtil.executeQueryForObject(sql, this::mapToRow, ticketId);
+        return DBUtil.executeQueryForObject(sql, this::mapToRowT, ticketId);
     }
-    public TicketDetail findByUserId(String userId) {
+    public Ticket findByUserId(String userId) {
         String sql = "SELECT * FROM ticket WHERE user_id = ?"; // 이거 JOIN으로 바꿔야할듯
 
-        return DBUtil.executeQueryForObject(sql, this::mapToRow, userId);
+        return DBUtil.executeQueryForObject(sql, this::mapToRowT, userId);
     }
 
     /**
@@ -55,7 +55,7 @@ public class TicketDAO {
                 "JOIN schedule s ON t.schedule_id = s.id " +
                 "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow, userId);
+        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId);
     }
 
     /**
@@ -73,7 +73,7 @@ public class TicketDAO {
                 "JOIN schedule s ON t.schedule_id = s.id " +
                 "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.departure = ? AND s.arrival = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, departure, arrival);
+        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId, departure, arrival);
     }
 
     /**
@@ -90,7 +90,7 @@ public class TicketDAO {
                 "JOIN schedule s ON t.schedule_id = s.id " +
                 "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.arrival = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, arrival);
+        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId, arrival);
     }
 
     /**
@@ -107,10 +107,10 @@ public class TicketDAO {
                 "JOIN schedule s ON t.schedule_id = s.id " +
                 "JOIN plane p ON s.plane_id = p.id " +
                 "WHERE t.user_id = ? AND s.id = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRow, userId, scheduleId);
+        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId, scheduleId);
     }
 
-    private TicketDetail mapToRow(ResultSet rs) {
+    private TicketDetail mapToRowTD(ResultSet rs) {
         try {
             return new TicketDetail(
                     new Ticket(
@@ -126,8 +126,22 @@ public class TicketDAO {
                             rs.getString("arrival"),
                             rs.getObject("start_time", LocalDateTime.class),
                             rs.getInt("flight_time"),
-                            rs.getString("airline") + " (" +rs.getString("model") + ")"
+                            rs.getString("airline") + " (" + rs.getString("model") + ")"
                     )
+            );
+        } catch (Exception e) {
+            ConsoleView.error("데이터를 불러오는 중 오류가 발생했습니다. 입력값을 확인 후 다시 시도해 주세요.");
+            return null;
+        }
+    }
+
+    private Ticket mapToRowT(ResultSet rs){
+        try {
+            return new Ticket(
+                    rs.getInt("id"),
+                    rs.getString("user_id"),
+                    rs.getInt("schedule_id"),
+                    rs.getInt("selected_seat")
             );
         } catch (Exception e) {
             ConsoleView.error("데이터를 불러오는 중 오류가 발생했습니다. 입력값을 확인 후 다시 시도해 주세요.");

@@ -22,15 +22,15 @@ public class SeatDAO {
                 seat.isBooked()
         );
     }
-    public int updateBooked(boolean booked, int scheduleId, int seatNumber, boolean seatStatus){
+    public int updateBooked(int scheduleId, int seatNumber, boolean currentStatus, boolean newStatus){
         String sql = "UPDATE seat SET is_booked = ? WHERE schedule_id = ? AND seat_number = ? AND is_booked = ?;";
 
         return DBUtil.executeUpdateN(
                 sql,
-                booked,
+                currentStatus,
                 scheduleId,
                 seatNumber,
-                seatStatus
+                newStatus
         );
     }
 
