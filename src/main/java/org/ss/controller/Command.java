@@ -20,8 +20,20 @@ public class Command {
         commandMap.put("plane", command -> PLANE_CONTROLLER.plane(command));
         commandMap.put("book", command -> TICKET_CONTROLLER.ticket(command));
     }
+
+    /**
+     * 입력밭은 명령어 변환 <br>
+     * 입력받은 명렁어의 최소 요구사항 'air' 없다면 return null <br><br>
+     * 명렁어 키워드 별로 구분하기 쉽게 배열로 만듦 <br>
+     * - 공백제거 <br>
+     * - 띄어쓰기 기준 단, " 있다면 띄어쓰기 무시하고 " 한번 더 나올 때 까지 <br>
+     * - 입력받은 명령어 중, 띄어쓰기 있는 명령어에 필수로 들어가있는 "" 제거
+     *
+     * @param command 유저가 입력한 명령어
+     * @return String 배열로 변환한 값
+     */
     public static String[] parseCommand(String command){
-        if(command.isEmpty() || !command.startsWith("air")){ // cmd에 아무것도 없음
+        if(command.isEmpty() || !command.startsWith("air")){ // check
             return null;
         }
 
@@ -36,19 +48,26 @@ public class Command {
         return commands;
     }
 
-    // 명령어 실행부분
-    public static void executeCommand(String[] command){
-        if(command == null) {
-            ConsoleView.error("Command is null");
-            return;
-        } else if (command.length < 2) {
-            ConsoleView.error("Invalid command");
-            return;
+    /**
+     * 명령어 실행 <br>
+     * 매개변수로 받은 command 배열의 길이가 2 이하(air ___ 형식) 또는 cmd 배열의 값 중 하나라도 "", "   ", null 이라면 실행 안하고 예외 던짐. <br><br>
+     * 명렁어 포멧 확인 이후 명령어 실행 <br>
+     * 만약 'air ___'에서 입력받은 ___이 명령어 맵에 없다면, 예외 또 던짐
+     * @param command 명령어 배열
+     */
+    public static void executeCommand(String[] command) {
+        if (command.length < 2) {
+            throw new RuntimeException("Invalid command format");
+        }
+        for (String cmd : command) {
+            if (cmd == null || cmd.isBlank()) {
+                throw new RuntimeException("Command or argument cannot be empty");
+            }
         }
 
         Consumer<String[]> action = commandMap.get(command[1]);
-        if(action != null) action.accept(command); // 실행
-        else ConsoleView.error("Unknown command");
+        if (action != null) action.accept(command); // 실행
+        else throw new RuntimeException("Command not found");
     }
 
     /**

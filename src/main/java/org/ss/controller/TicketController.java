@@ -21,6 +21,7 @@ public class TicketController {
     public TicketController() {
         commandMap.put("add", this::addTicket);
         commandMap.put("remove", this::removeTicket);
+        commandMap.put("sc", this::seatChange);
     }
 
     public void ticket(String[] cmd) {
@@ -45,42 +46,6 @@ public class TicketController {
             filteredList(start, end);
         }
         else throw new IllegalArgumentException("Unknown action: " + action);
-    }
-
-    /**
-     * 예약된 리스트 전체 출력
-     */
-    public void ticketList(){
-        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId());
-        ConsoleView.printTicketList(list);
-    }
-
-    /**
-     * 예약된 리스트 중 스케줄 ID로 필터링 후 출력
-     * @param id 스케줄 ID
-     */
-    public void filteredList(int id){
-        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), id);
-        ConsoleView.printTicketList(list);
-    }
-
-    /**
-     * 예약된 리스트 중 도착지로 필터링 후 출력
-     * @param arrival 도착지
-     */
-    public void filteredList(String arrival){
-        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), arrival);
-        ConsoleView.printTicketList(list);
-    }
-
-    /**
-     * 예약된 리스트 중 출발지 + 도착지로 필터링 후 출력
-     * @param departure 출발지
-     * @param arrival 도착지
-     */
-    public void filteredList(String departure, String arrival){
-        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), departure, arrival);
-        ConsoleView.printTicketList(list);
     }
 
     public void addTicket(String[] cmd){
@@ -126,5 +91,50 @@ public class TicketController {
 
         TICKET_DAO.delete(ticketId, MEMBER.getId());
         SEAT_DAO.updateBooked(false, scheduleID, selectedSeatNumber, true);
+    }
+
+    public void seatChange(String[] cmd){
+        Command.validLength(cmd, 5);
+
+        int scheduleId = Integer.parseInt(cmd[3]);
+        int selectSeatNumber = Integer.parseInt(cmd[4]);
+
+
+    }
+
+    /**
+     * 예약된 리스트 전체 출력
+     */
+    public void ticketList(){
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId());
+        ConsoleView.printTicketList(list);
+    }
+
+    /**
+     * 예약된 리스트 중 스케줄 ID로 필터링 후 출력
+     * @param id 스케줄 ID
+     */
+    public void filteredList(int id){
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), id);
+        ConsoleView.printTicketList(list);
+    }
+
+    /**
+     * 예약된 리스트 중 도착지로 필터링 후 출력
+     * @param arrival 도착지
+     */
+    public void filteredList(String arrival){
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), arrival);
+        ConsoleView.printTicketList(list);
+    }
+
+    /**
+     * 예약된 리스트 중 출발지 + 도착지로 필터링 후 출력
+     * @param departure 출발지
+     * @param arrival 도착지
+     */
+    public void filteredList(String departure, String arrival){
+        List<TicketDetail> list = TICKET_DAO.ticketList(MEMBER.getId(), departure, arrival);
+        ConsoleView.printTicketList(list);
     }
 }

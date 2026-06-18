@@ -27,8 +27,11 @@ public class ConsoleView {
         System.out.println("[Booked]            air book 출발지 도착지");
         System.out.println("[Booked]            air book 도착지");
         System.out.println("[Booked]            air book 항공편ID");
-        System.out.println("[Book Add]          air book add 스케줄ID 선택할_좌석_ID");
+        System.out.println("[Book Add]          air book add 스케줄ID 선택할_좌석_번호");
         System.out.println("[Book Cancel]       air book remove 티켓ID");
+        System.out.println("[Seat Change]       air book sc 티켓ID, 좌석번호");
+//        System.out.println("[Seat List]         air book sl 스케줄ID");
+//        System.out.println("[Seat List(Filter)] air book sl 스케줄ID empty/booked");
         System.out.println("-----------------------------------------------------------------------------------------------");
         System.out.println(Color.YELLOW+ "출발지/도착지 모두 IATA 공항 코드 사용 (ICN, NRT, NYC. . . )\n" +
                 "띄어쓰기 없는 경우 \"\" 생략 가능, 띄어쓰기 포함 시 \"\" 필수\n" +

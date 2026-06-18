@@ -1,17 +1,27 @@
 USER ------------------------------------------------------------------------------------------
-[SignUp] air user signup "ID" "비밀번호"
-[Login] air user login "ID" "이름" "비밀번호" "전화번호"
+[SignUp]           air user signup "ID" "비밀번호"
+[Login]            air user login "ID" "이름" "비밀번호" "전화번호"
+
 MANAGEMENT ------------------------------------------------------------------------------------
-[Plane Add] air plane add "항공사" "항공기 모델" 좌석수
-[Plane Remove] air plane remove 항공기ID
-[Planes] air plane
-[Planes(Filter)] air plane "항공사" "항공기 모델"
-[Schedule Add] air schedule add 항공기ID 출발지 도착지 "출발시간(YYYY-MM-DD HH:MM-SS)" 소요시간
-[Schedule Remove] air schedule remove 항공기ID
+[Plane Add]        air plane add "항공사" "항공기 모델" 좌석수
+[Plane Remove]     air plane remove 항공기ID
+[Planes]           air plane
+[Planes(Filter)]   air plane "항공사" "항공기 모델"
+[Schedule Add]     air schedule add 항공기ID 출발지 도착지 "출발시간(YYYY-MM-DD HH:MM:SS)" 소요시간(분)
+[Schedule Remove]  air schedule remove 스케줄ID
+[Schedule Delay]   air schedule delay 스케줄ID 지연시간(분 단위, +/- 둘 다 가능)
+
 FLIGHTS ---------------------------------------------------------------------------------------
-[Schedules] air schedule
+[Schedules]        air schedule
 [Schedules(Filter)] air schedule 출발지 도착지
-[Booked] air booked
-[Book Add] air book add
-[Book Cancel] air book remove
+[Booked]           air book
+[Booked]           air book 출발지 도착지
+[Booked]           air book 도착지
+[Booked]           air book 항공편ID
+[Book Add]         air book add 스케줄ID 선택할_좌석_ID
+[Book Cancel]      air book remove 티켓ID
+
 -----------------------------------------------------------------------------------------------
+- 출발지/도착지 모두 IATA 공항 코드 사용 (ICN, NRT, NYC...)
+- 띄어쓰기 없는 경우 "" 생략 가능, 띄어쓰기 포함 시 "" 필수
+- 예약 정보 조회/추가/삭제 시 로그인 필수
