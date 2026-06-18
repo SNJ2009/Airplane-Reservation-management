@@ -82,15 +82,21 @@ public class TicketController {
         Command.validLength(cmd, 4);
 
         int ticketId = Integer.parseInt(cmd[3]);
-        Ticket ticket = TICKET_DAO.findById(ticketId);
+        ConsoleView.debugger("" + ticketId);
+        TicketDetail ticket = TICKET_DAO.findById(ticketId);
 
+        ConsoleView.debugger("여기 작동 1"+ ticket);
         if(!(ticket.getUserId().equals(MEMBER.getId()))) throw new IllegalArgumentException("This Ticket does not belong to this Member");
 
+        ConsoleView.debugger("여기 작동 2");
         int scheduleID = ticket.getScheduleId();
         int selectedSeatNumber = ticket.getSelectedSeat();
 
+        ConsoleView.debugger("여기 작동 3");
         TICKET_DAO.delete(ticketId, MEMBER.getId());
+        ConsoleView.debugger("여기 작동 4");
         SEAT_DAO.updateBooked(false, scheduleID, selectedSeatNumber, true);
+        ConsoleView.debugger("여기 작동 5");
     }
 
     public void seatChange(String[] cmd){
@@ -99,6 +105,7 @@ public class TicketController {
         int scheduleId = Integer.parseInt(cmd[3]);
         int selectSeatNumber = Integer.parseInt(cmd[4]);
 
+        Ticket ticket = TICKET_DAO.findByUserId(MEMBER.getId());
 
     }
 

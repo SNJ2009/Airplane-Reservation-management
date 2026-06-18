@@ -81,7 +81,9 @@ public class ScheduleController {
 
         if(scheduleDAO.delayUpdate(scheduleId, delayTime) >= 1){
             ConsoleView.successful();
-        } else throw new AccessException("Delay update failed");
+        } else {
+            throw new AccessException("Delay update failed");
+        }
     }
 
 

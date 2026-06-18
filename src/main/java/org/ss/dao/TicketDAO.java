@@ -36,6 +36,11 @@ public class TicketDAO {
 
         return DBUtil.executeQueryForObject(sql, this::mapToRow, ticketId);
     }
+    public TicketDetail findByUserId(String userId) {
+        String sql = "SELECT * FROM ticket WHERE user_id = ?"; // 이거 JOIN으로 바꿔야할듯
+
+        return DBUtil.executeQueryForObject(sql, this::mapToRow, userId);
+    }
 
     /**
      * 로그인한 유저의 ID를 기준으로 필터링 후 리스트 반환
