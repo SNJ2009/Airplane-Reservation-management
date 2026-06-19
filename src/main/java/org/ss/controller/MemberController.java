@@ -3,6 +3,7 @@ package org.ss.controller;
 import org.ss.common.ConsoleView;
 import org.ss.dao.MemberDAO;
 import org.ss.entity.Member;
+import org.ss.exception.AccessException;
 
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -117,6 +118,17 @@ public class MemberController {
         // DB 저장
         memberDAO.save(member);
         ConsoleView.successful();
+    }
+
+    /**
+     * add / remove 명렁을 실행한 유저가 관리자 권한이 있는지 확인
+     */
+    public static void isNotManager() {
+        boolean isManager = Member.getInstance().isManager();
+
+        if(!isManager){
+            throw new AccessException("Access denied");
+        }
     }
 
     private String hash(String password) {

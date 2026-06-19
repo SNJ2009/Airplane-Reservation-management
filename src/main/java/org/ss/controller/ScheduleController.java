@@ -42,7 +42,7 @@ public class ScheduleController {
     }
 
     public void add(String[] cmd) {
-        isNotManager();
+        MemberController.isNotManager();
         Command.validLength(cmd, 8);
 
         int planeId = Integer.parseInt(cmd[3]);
@@ -65,7 +65,7 @@ public class ScheduleController {
     }
 
     public void delete(String[] cmd) {
-        isNotManager();
+        MemberController.isNotManager();
         Command.validLength(cmd, 4); // air schedule remove id
 
         int id = Integer.parseInt(cmd[3]);
@@ -73,7 +73,7 @@ public class ScheduleController {
     }
 
     public void delay(String[] cmd){
-        isNotManager();
+        MemberController.isNotManager();
         Command.validLength(cmd, 5);
 
         int scheduleId = Integer.parseInt(cmd[3]);
@@ -95,16 +95,5 @@ public class ScheduleController {
     public void show(String departure, String arrival) { // 출발지, 도착지 필터링해서 보여주기
         List<Schedule> scheduleList = scheduleDAO.getScheduleList(departure, arrival);
         ConsoleView.printScheduleList(scheduleList);
-    }
-
-    /**
-     * add / remove 명렁을 실행한 유저가 관리자 권한이 있는지 확인
-     */
-    private void isNotManager() {
-        boolean isManager = Member.getInstance().isManager();
-
-        if(!isManager){
-            throw new AccessException("Access denied");
-        }
     }
 }

@@ -24,11 +24,15 @@ public class TicketController {
         commandMap.put("sc", this::seatChange);
     }
 
+    /**
+     *
+     * @param cmd
+     */
     public void ticket(String[] cmd) {
         Command.validLength(cmd, 0, 5);
         if(cmd.length == 2) { ticketList(); return; }
 
-        String action = cmd[2];
+        String action = cmd[2].trim();
         if(commandMap.containsKey(action)) {
             commandMap.get(action).accept(cmd);
         }
@@ -48,8 +52,15 @@ public class TicketController {
         else throw new IllegalArgumentException("Unknown action: " + action);
     }
 
+    /**
+     *
+     * @param cmd
+     */
     public void addTicket(String[] cmd){
         Command.validLength(cmd, 5);
+        if(Member.getInstance().getId() == null || Member.getInstance().getId().isBlank()) {
+            throw new IllegalArgumentException("Invalid user id OR Please login again");
+        }
 
         int scheduleID = Integer.parseInt(cmd[3]);
         int selectedSeatNumber = Integer.parseInt(cmd[4]);
@@ -59,7 +70,7 @@ public class TicketController {
         try {
 
 
-            int changedRow = SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, true, false);
+            int changedRow = SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, false, true);
             seatUpdate = (changedRow > 0);
 
             if(seatUpdate) {
@@ -73,34 +84,59 @@ public class TicketController {
                 ConsoleView.failedBook("이미 예약된 좌석");
             }
         } catch (Exception e) {
-            if(seatUpdate) SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, false, true);
+            SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, true, false);
             TICKET_DAO.delete(key, MEMBER.getId());
         }
     }
 
+    /**
+     *
+     * @param cmd
+     */
     public void removeTicket(String[] cmd){
         Command.validLength(cmd, 4);
 
         int ticketId = Integer.parseInt(cmd[3]);
         Ticket ticket = TICKET_DAO.findById(ticketId);
 
-        if(!(ticket.getUserId().equals(MEMBER.getId()))) throw new IllegalArgumentException("This Ticket does not belong to this Member");
+        if(!(ticket.getUserId().equals(MEMBER.getId())))
+            throw new IllegalArgumentException("This Ticket does not belong to this Member");
 
         int scheduleID = ticket.getScheduleId();
         int selectedSeatNumber = ticket.getSelectedSeat();
 
         TICKET_DAO.delete(ticketId, MEMBER.getId());
-        SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, false, true);
+        SEAT_DAO.updateBooked(scheduleID, selectedSeatNumber, true, false);
     }
 
+    /**
+     * 좌석 변경
+     * @param cmd
+     */
     public void seatChange(String[] cmd){
         Command.validLength(cmd, 5);
 
-        int scheduleId = Integer.parseInt(cmd[3]);
+        int ticketId = Integer.parseInt(cmd[3]);
         int selectSeatNumber = Integer.parseInt(cmd[4]);
 
-        Ticket ticket = TICKET_DAO.findByUserId(MEMBER.getId());
+        Ticket ticket = TICKET_DAO.findById(ticketId);
+        if(ticket == null || !ticket.getUserId().equals(MEMBER.getId())) {
+            throw new IllegalArgumentException("티켓을 찾지 못했거나, 티켓의 주인이 로그인 된 유저와 일치하지 않습니다.");
+        }
 
+        int cancelRow = SEAT_DAO.updateBooked(ticket.getScheduleId(), ticket.getSelectedSeat(), true, false); // 원래 예약된거 false
+        ConsoleView.debugger("ticket:" + ticket +" | "+ cancelRow);
+
+        if(cancelRow > 0){
+            int newRow = SEAT_DAO.updateBooked(ticket.getScheduleId(), selectSeatNumber, false, true); // 새거 true
+            if(newRow > 0) {
+                int ticketRow = TICKET_DAO.updateSeat(ticket.getId(), selectSeatNumber);
+
+                if(ticketRow == 0) throw new RuntimeException("티켓 정보 갱신 실패");
+            } else
+                throw new IllegalArgumentException("이미 예약된 좌석");
+        } else
+            throw new IllegalArgumentException("좌석 정보를 불러오지 못했거나 좌석 예약 정보 변경 실패");
     }
 
     /**

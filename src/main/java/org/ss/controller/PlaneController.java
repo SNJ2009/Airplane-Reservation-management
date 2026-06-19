@@ -1,6 +1,7 @@
 package org.ss.controller;
 
 import org.ss.common.ConsoleView;
+import org.ss.dao.MemberDAO;
 import org.ss.dao.PlaneDAO;
 import org.ss.entity.Plane;
 
@@ -16,6 +17,7 @@ public class PlaneController {
 //    public PlaneController(){}
 
     public void plane(String[] cmd){
+        MemberController.isNotManager();
         Command.validLength(cmd, 2, 6);
         if(cmd.length == 2) { list(); return; }
 

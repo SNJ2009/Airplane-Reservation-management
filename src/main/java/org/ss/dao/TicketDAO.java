@@ -30,16 +30,15 @@ public class TicketDAO {
         String sql = "DELETE FROM ticket WHERE id = ? AND user_id = ?";
         DBUtil.executeUpdate(sql, ticket_id, userId);
     }
+    public int updateSeat(int ticket_id, int new_seat) {
+        String sql = "UPDATE ticket SET selected_seat = ? WHERE id = ?";
+        return DBUtil.executeUpdateN(sql, new_seat, ticket_id);
+    }
 
     public Ticket findById(int ticketId) {
         String sql = "SELECT * FROM ticket WHERE id = ?"; // 이거 JOIN으로 바꿔야할듯
 
         return DBUtil.executeQueryForObject(sql, this::mapToRowT, ticketId);
-    }
-    public Ticket findByUserId(String userId) {
-        String sql = "SELECT * FROM ticket WHERE user_id = ?"; // 이거 JOIN으로 바꿔야할듯
-
-        return DBUtil.executeQueryForObject(sql, this::mapToRowT, userId);
     }
 
     /**
@@ -94,20 +93,20 @@ public class TicketDAO {
     }
 
     /**
-     * 유저 ID + 스케줄 ID로 조회
+     * 유저 ID + 티켓 ID로 조회
      * @param userId 유저 ID
-     * @param scheduleId 스케줄 ID
+     * @param ticketId 스케줄 ID
      * @return 리스트로
      */
-    public List<TicketDetail> ticketList(String userId, int scheduleId) {
+    public List<TicketDetail> ticketList(String userId, int ticketId) {
         String sql = "SELECT t.id, t.user_id, t.schedule_id, t.selected_seat, " +
                 "s.id AS s_id, s.plane_id, s.departure, s.arrival, s.start_time, s.flight_time, " +
                 "p.airline, p.model " +
                 "FROM ticket t " +
                 "JOIN schedule s ON t.schedule_id = s.id " +
                 "JOIN plane p ON s.plane_id = p.id " +
-                "WHERE t.user_id = ? AND s.id = ?";
-        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId, scheduleId);
+                "WHERE t.user_id = ? AND t.id = ?";
+        return DBUtil.executeQueryForList(sql, this::mapToRowTD, userId, ticketId);
     }
 
     private TicketDetail mapToRowTD(ResultSet rs) {

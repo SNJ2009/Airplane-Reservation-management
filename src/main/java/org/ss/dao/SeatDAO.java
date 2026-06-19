@@ -27,10 +27,10 @@ public class SeatDAO {
 
         return DBUtil.executeUpdateN(
                 sql,
-                currentStatus,
+                newStatus,
                 scheduleId,
                 seatNumber,
-                newStatus
+                currentStatus
         );
     }
 
