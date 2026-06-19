@@ -19,17 +19,17 @@ public class ConsoleView {
         System.out.println("[Planes(Filter)]    air plane \"항공사\" \"항공기 모델\"");
         System.out.println("[Schedule Add]      air schedule add 항공기ID 출발지 도착지 \"출발시간(YYYY-MM-DD HH:MM:SS)\" 소요시간(분)");
         System.out.println("[Schedule Remove]   air schedule remove 스케줄ID");
-        System.out.println("[Schedule Delay]     air schedule delay 스케줄ID 지연시간(분 단위, +/- 둘 다 가능)");
+        System.out.println("[Schedule Delay]    air schedule delay 스케줄ID 지연시간(분 단위, +/- 둘 다 가능)");
         System.out.println("FLIGHTS ---------------------------------------------------------------------------------------");
         System.out.println("[Schedules]         air schedule");
         System.out.println("[Schedules(Filter)] air schedule 출발지 도착지");
         System.out.println("[Booked]            air book");
         System.out.println("[Booked]            air book 출발지 도착지");
         System.out.println("[Booked]            air book 도착지");
-        System.out.println("[Booked]            air book 항공편ID");
+        System.out.println("[Booked]            air book 티켓ID");
         System.out.println("[Book Add]          air book add 스케줄ID 선택할_좌석_번호");
         System.out.println("[Book Cancel]       air book remove 티켓ID");
-//        System.out.println("[Seat Change]       air book sc 티켓ID 좌석번호");
+        System.out.println("[Seat Change]       air book sc 티켓ID 좌석번호");
         System.out.println("-----------------------------------------------------------------------------------------------");
         System.out.println(Color.YELLOW+ "출발지/도착지 모두 IATA 공항 코드 사용 (ICN, NRT, NYC. . . )\n" +
                 "띄어쓰기 없는 경우 \"\" 생략 가능, 띄어쓰기 포함 시 \"\" 필수\n" +
