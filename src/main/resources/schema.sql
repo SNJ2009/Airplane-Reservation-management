@@ -29,7 +29,7 @@ CREATE TABLE seat ( -- 좌석 상태
     is_booked BOOLEAN DEFAULT FALSE, -- 좌석 예약 여부
 
     FOREIGN KEY (schedule_id) REFERENCES schedule(id) ON DELETE CASCADE,
-    UNIQUE(schedule_id, seat_number) -- Composite Unique
+    UNIQUE(schedule_id, seat_number)
 );
 
 CREATE TABLE user (
@@ -45,7 +45,7 @@ CREATE TABLE ticket ( -- 누가 어떤 좌석 예약했는지
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id VARCHAR(50), -- 예약한 유저
     schedule_id INT, -- 어떤 항공편 좌석인지 ( 항공편 id )
-    selected_seat INT, -- 좌석번호 FK (좌석 번호 id)(A1, A2 , , , )
+    selected_seat INT,
 
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (schedule_id, selected_seat) REFERENCES seat(schedule_id, seat_number) ON DELETE CASCADE -- FK를 seat PK 하면 나중에 JOIN 여러 번 해야해서 이거 해야할듯?
