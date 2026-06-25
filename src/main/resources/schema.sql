@@ -1,4 +1,4 @@
--- 항공편 관리 시스템 초기화 스크립트
+
 -- DB에 복붙
 
 CREATE DATABASE airplane;
@@ -32,6 +32,7 @@ CREATE TABLE seat ( -- 좌석 상태
     UNIQUE(schedule_id, seat_number)
 );
 
+
 CREATE TABLE user (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -45,6 +46,7 @@ CREATE TABLE ticket ( -- 누가 어떤 좌석 예약했는지
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id VARCHAR(50), -- 예약한 유저
     schedule_id INT, -- 어떤 항공편 좌석인지 ( 항공편 id )
+    selected_seat INT,
     selected_seat INT,
 
     FOREIGN KEY (user_id) REFERENCES user(id),
